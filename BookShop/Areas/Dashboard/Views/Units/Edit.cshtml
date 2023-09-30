@@ -1,0 +1,76 @@
+﻿@model EditUnitVm
+<div class="page-wrapper">
+    <!-- Page header -->
+    <div class="page-header d-print-none">
+        <div class="container-xl">
+            <div class="row g-2 align-items-center">
+                <div class="col">
+                    <!-- Page pre-title -->
+                    <div class="page-pretitle">
+                        CMS
+                    </div>
+                    <h2 class="page-title">
+                        Dashboard
+                    </h2>
+                </div>
+                <!-- Page title actions -->
+                <div class="col-auto ms-auto d-print-none">
+                    <div class="btn-list">
+                        <span class="d-none d-sm-inline">
+                            <a asp-action="Index" class="btn">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-arrow-left"
+                                    width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
+                                    fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                    <path d="M5 12l14 0"></path>
+                                    <path d="M5 12l6 6"></path>
+                                    <path d="M5 12l6 -6"></path>
+                                </svg>
+                                Go Back
+                            </a>
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="page-body">
+        <div class="container-xl">
+            <div class="col-md-12">
+                <form class="card" asp-action="Edit">
+                    <input type="hidden" asp-for="Id">
+                    <div class="card-header">
+                        <h3 class="card-title">Edit Unit</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="mb-3">
+                            <label class="form-label required" asp-for="Name">Name</label>
+                            <div>
+                                <input type="text" class="form-control" placeholder="Enter Name" asp-for="Name">
+                                <small class="form-hint" asp-validation-for="Name"></small>
+                                <span class="text-danger" asp-validation-for="Name"></span>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label" asp-for="Description">Description</label>
+                            <div>
+                                <textarea rows="8" class="form-control" placeholder="Description"
+                                    asp-for="Description"></textarea>
+                                <span class="form-hint" asp-validation-for="Description"></span>
+                                <small class="form-hint" asp-validation-for="Description"></small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-footer text-end">
+                        <button type="submit" class="btn btn-primary">Save</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @await Html.PartialAsync("_ValidationScriptsPartial")
+}

@@ -1,0 +1,54 @@
+﻿@model LoginVm
+<!-- Start breadcrumb area -->
+<div class="ht__breadcrumb__area bg-image--6">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="breadcrumb__inner text-center">
+                    <h2 class="breadcrumb-title">Login</h2>
+                    <nav class="breadcrumb-content">
+                        <a class="breadcrumb_item" href="/">Home</a>
+                        <span class="brd-separator">/</span>
+                        <span class="breadcrumb_item active">Login</span>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End breadcrumb area -->
+<!-- Start My Account Area -->
+<section class="my_account_area pt--80 pb--55 bg--white">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-6 col-12 mx-auto">
+                <div class="my__account__wrapper">
+                    <h3 class="account__title">Login</h3>
+                    <form asp-action="Login">
+                        <div class="account__form">
+                            <div class="input__box">
+                                <label>Username or email address <span>*</span></label>
+                                <input type="text" asp-for="Identity">
+                            </div>
+                            <div class="input__box">
+                                <label>Password<span>*</span></label>
+                                <input type="text" asp-for="Password">
+                            </div>
+                            <div class="form__btn">
+                                <button>Login</button>
+                                <label class="label-for-checkbox">
+                                    <input id="rememberme" class="input-checkbox"
+                                           value="true" type="checkbox" asp-for="RememberMe">
+                                    <span>Remember me</span>
+                                </label>
+                            </div>
+                            <a class="forget_pass" href="#">Lost your password?</a>
+                            <a class="forget_pass" asp-action="Register">Don't have an account? Please Register</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- End My Account Area -->

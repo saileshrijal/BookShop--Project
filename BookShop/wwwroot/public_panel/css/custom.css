@@ -1,0 +1,27 @@
+/*********************************************************************************
+
+	Template Name: Boighor Books Library eCommerce Store
+	Note: This is custom css. All custom styles (user styles) declare here.
+
+**********************************************************************************/
+
+@media screen and (min-width: 1200px) {
+    .container {
+        max-width: 1200px;
+    }
+}
+/*
+.row:not(.g-0) {
+    margin-left: -15px;
+    margin-right: -15px;
+}
+
+.row:not(.g-0) > [class^="col"] {
+    padding-left: 15px;
+    padding-right: 15px;
+    position: relative;
+}
+*/
+.row {
+    --bs-gutter-x: 30px;
+  }
