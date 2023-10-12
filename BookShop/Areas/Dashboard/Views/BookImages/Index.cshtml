@@ -1,0 +1,102 @@
+﻿@model BookImageIndexVm
+@{
+    ViewData["title"] = "Book Images";
+}
+<div class="page-wrapper">
+    <!-- Page header -->
+    <div class="page-header d-print-none">
+        <div class="container-xl">
+            <div class="row g-2 align-items-center">
+                <div class="col">
+                    <!-- Page pre-title -->
+                    <div class="page-pretitle">
+                        Overview
+                    </div>
+                    <h2 class="page-title">
+                        Dashboard
+                    </h2>
+                </div>
+                <!-- Page title actions -->
+                <div class="col-auto ms-auto d-print-none">
+                    <div class="btn-list">
+                        <span class="d-none d-sm-inline">
+                            <a asp-action="Index" asp-controller="Books" class="btn">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-arrow-left"
+                                     width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
+                                     fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                    <path d="M5 12l14 0"></path>
+                                    <path d="M5 12l6 6"></path>
+                                    <path d="M5 12l6 -6"></path>
+                                </svg>
+                                Go Back
+                            </a>
+                        </span>
+                        <a asp-action="Add" asp-route-bookId="@Model.BookId" class="btn btn-primary d-none d-sm-inline-block">
+                            <!-- Download SVG icon from http://tabler-icons.io/i/plus -->
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24"
+                                 viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
+                                 stroke-linecap="round" stroke-linejoin="round">
+                                <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                                <path d="M12 5l0 14"/>
+                                <path d="M5 12l14 0"/>
+                            </svg>
+                            New Image
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="page-body">
+        <div class="container-xl">
+              @await Html.PartialAsync("_BookInfo", Model.Book)
+            <div class="row row-deck row-cards">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">Images</h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                @if (Model?.BookImages?.Any() == true)
+                                {
+                                    @foreach (var item in Model.BookImages)
+                                    {
+                                        <div class="col-sm-12 col-md-4 mb-2">
+                                            <div class="card">
+                                                <div class="card-header">
+                                                    <h4 class="card-title">@item.Name</h4>
+                                                </div>
+                                                <div class="card-body p-0">
+                                                    <img style="height: 300px;width: 100%;object-fit: cover;object-position: center;" class="img-fluid" src="/uploads/books/@item.Path" alt="@item.Alt">
+                                                </div>
+                                                <div class="card-footer d-flex gap-2">
+                                                    <a class="btn btn-primary" asp-action="Edit" asp-route-bookId="@item.BookId" asp-route-id="@item.Id">
+                                                        <i class="fa fa-edit"></i>
+                                                    </a>
+                                                    <form asp-action="Delete" asp-route-bookId="@item.BookId" asp-route-id="@item.Id">
+                                                        <button class="btn btn-danger deleteBtn">
+                                                            <i class="fa fa-trash"></i>
+                                                        </button>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    }
+                                }
+                                else
+                                {
+                                    <div class="alert alert-danger" role="alert">
+                                        ⚠️ Images not uploaded <a asp-action="Add" asp-route-bookId="@Model?.BookId">Upload New Image</a>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
