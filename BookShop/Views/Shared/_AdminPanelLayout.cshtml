@@ -164,16 +164,16 @@
             </div>
             <div class="nav-item dropdown">
                 <a href="#" class="nav-link d-flex lh-1 text-reset p-0" data-bs-toggle="dropdown" aria-label="Open user menu">
-	                @if (string.IsNullOrWhiteSpace(loggedInUser?.ProfilePictureUrl))
-	                {
-		                <span class="avatar avatar-sm" style="font-size: medium;">
-			                @loggedInUser?.FirstName?[..1]?.ToUpper()@loggedInUser?.LastName?[..1]?.ToUpper()
-		                </span>
-	                }
-	                else
-	                {
-		                <span class="avatar avatar-sm" style="background-image: url(/admin_panel/static/avatars/000m.jpg)"></span>
-	                }
+                    @if (string.IsNullOrWhiteSpace(loggedInUser?.ProfilePictureUrl))
+                    {
+                        <span class="avatar avatar-sm" style="font-size: medium;">
+                            @loggedInUser?.FirstName?[..1]?.ToUpper()@loggedInUser?.LastName?[..1]?.ToUpper()
+                        </span>
+                    }
+                    else
+                    {
+                        <span class="avatar avatar-sm" style="background-image: url(/admin_panel/static/avatars/000m.jpg)"></span>
+                    }
                     <div class="d-none d-xl-block ps-2">
                         <div>@loggedInUser?.FullName</div>
                         <div class="mt-1 small text-muted">
@@ -237,6 +237,9 @@
                                 <div class="dropdown-menu-column">
                                     <a class="dropdown-item" asp-area="Dashboard" asp-controller="Categories" asp-action="Index">
                                         Categories
+                                    </a>
+                                    <a class="dropdown-item" asp-area="Dashboard" asp-controller="Books" asp-action="Index">
+                                        Books
                                     </a>
                                 </div>
                             </div>
@@ -1037,6 +1040,32 @@
       $('.select2').select2();
     });
   </script>
+<script>
+        $(document).ready(function () {
+            // Get references to the input and image elements
+            const $imageInput = $('#imageInput');
+            const $imagePreview = $('#imagePreview');
+
+            // Add an event listener to the file input element
+            $imageInput.change(function () {
+                const file = this.files[0];
+
+                if (file) {
+                    // Read the selected file as a data URL
+                    const reader = new FileReader();
+                    reader.onload = function (e) {
+                        // Set the src attribute of the image to the data URL
+                        $imagePreview.attr('src', e.target.result);
+                        $imagePreview.css('display', 'block'); // Show the image
+                    };
+                    reader.readAsDataURL(file);
+                } else {
+                    // If no file is selected, hide the image
+                    $imagePreview.css('display', 'none');
+                }
+            });
+        });
+    </script>
 @await Component.InvokeAsync("Notyf")
 @await RenderSectionAsync("Scripts", false)
 </body>

@@ -21,6 +21,7 @@
 
     <ItemGroup>
       <Folder Include="wwwroot\public_panel\" />
+      <Folder Include="wwwroot\uploads\books\" />
     </ItemGroup>
     
 </Project>

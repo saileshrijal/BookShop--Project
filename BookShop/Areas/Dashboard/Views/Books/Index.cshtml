@@ -1,6 +1,6 @@
-﻿@model List<UserIndexVm>
+﻿@model List<BookIndexVm>
 @{
-    ViewData["title"] = "Users";
+    ViewData["title"] = "Books";
 }
 <div class="page-wrapper">
     <!-- Page header -->
@@ -22,13 +22,13 @@
                         <a asp-action="Add" class="btn btn-primary d-none d-sm-inline-block">
                             <!-- Download SVG icon from http://tabler-icons.io/i/plus -->
                             <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24"
-                                viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
-                                stroke-linecap="round" stroke-linejoin="round">
-                                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                <path d="M12 5l0 14" />
-                                <path d="M5 12l14 0" />
+                                 viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
+                                 stroke-linecap="round" stroke-linejoin="round">
+                                <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                                <path d="M12 5l0 14"/>
+                                <path d="M5 12l14 0"/>
                             </svg>
-                            Add New User
+                            New book
                         </a>
                     </div>
                 </div>
@@ -42,53 +42,65 @@
                 <div class="col-12">
                     <div class="card">
                         <div class="card-header">
-                            <h3 class="card-title">List of Users</h3>
+                            <h3 class="card-title">List of Books</h3>
                         </div>
                         <div class="card-body">
                             <div class="table-responsive">
                                 <table class="table card-table table-vcenter text-nowrap datatable" id="dataTable">
                                     <thead>
-                                        <tr>
-                                            <th>Name</th>
-                                            <th>Email</th>
-                                            <th>Phone Number</th>
-                                            <th>Roles</th>
-                                            <th>Status</th>
-                                            <th>Created</th>
-                                            <th></th>
-                                        </tr>
+                                    <tr>
+                                        <th>Image</th>
+                                        <th>ID</th>
+                                        <th>Name</th>
+                                        <th>Description</th>
+                                        <th>Category</th>
+                                        <th>Price</th>
+                                        <th>Created</th>
+                                        <th>Status</th>
+                                        <th></th>
+                                    </tr>
                                     </thead>
                                     <tbody>
-                                        @foreach (var user in Model)
-                                        {
-                                            <tr>
-                                                <td>@user.FullName</td>
-                                                <td>@user.Email</td>
-                                                <td>@user.PhoneNumber</td>
-                                                <td>
-                                                    @foreach (var role in user.Roles!)
-                                                    {
-                                                        <span class="badge bg-info me-1">@role</span>
-                                                    }
-                                                </td>
-                                                <td>
-                                                    <span class='badge @(user.Status?"bg-success":"bg-danger") me-1'></span>
-                                                    @(user.Status ? "Active" : "In Active")
-                                                </td>
-                                                <td>@user.CreatedDate</td>
-                                                <td class="text-end">
-                                                    <span class="dropdown">
+                                    @foreach (var book in Model)
+                                    {
+                                        <tr>
+                                            <td>
+                                                <img style="width: 30px;height: 30px;" src="/uploads/books/@book.FeaturedImage" alt="">
+                                            </td>
+                                            <td>
+                                                <span class="text-muted">@book.Id</span>
+                                            </td>
+                                            <td>@book.Name</td>
+                                            <td>
+                                                @book.ShortDescription
+                                            </td>
+                                            <td>@book.CategoryName</td>
+                                            <td>@book.Price</td>
+                                            <td>@book.CreatedDate</td>
+                                            <td>
+                                                <span class='badge @(book.Status ? "bg-success" : "bg-danger") me-1'></span>
+                                                @(book.Status ? "Active" : "In Active")
+                                            </td>
+                                            <td class="text-end">
+                                                <div class="btn-list flex nowrap">
+                                                    <a class="btn" asp-controller="BookImages" asp-action="Index" asp-route-bookId="@book.Id">
+                                                        <i class="fa fa-image"></i>
+                                                    </a>
+
+                                                    <div class="dropdown">
                                                         <button class="btn dropdown-toggle align-text-top"
-                                                            data-bs-boundary="viewport"
-                                                            data-bs-toggle="dropdown">Actions</button>
+                                                                data-bs-boundary="viewport"
+                                                                data-bs-toggle="dropdown">
+                                                            Actions
+                                                        </button>
                                                         <div class="dropdown-menu dropdown-menu-end">
                                                             <a class="dropdown-item" asp-action="Edit"
-                                                                asp-route-id="@user.Id">
+                                                               asp-route-id="@book.Id">
                                                                 <svg xmlns="http://www.w3.org/2000/svg"
-                                                                    class="icon icon-tabler icon-tabler-edit" width="24"
-                                                                    height="24" viewBox="0 0 24 24" stroke-width="2"
-                                                                    stroke="currentColor" fill="none" stroke-linecap="round"
-                                                                    stroke-linejoin="round">
+                                                                     class="icon icon-tabler icon-tabler-edit" width="24"
+                                                                     height="24" viewBox="0 0 24 24" stroke-width="2"
+                                                                     stroke="currentColor" fill="none" stroke-linecap="round"
+                                                                     stroke-linejoin="round">
                                                                     <path stroke="none" d="M0 0h24v24H0z" fill="none">
                                                                     </path>
                                                                     <path
@@ -101,13 +113,13 @@
                                                                 </svg>
                                                                 Edit
                                                             </a>
-                                                            <form asp-action="Delete" asp-route-id="@user.Id">
+                                                            <form asp-action="Delete" asp-route-id="@book.Id">
                                                                 <button type="submit" class="dropdown-item deleteBtn">
                                                                     <svg xmlns="http://www.w3.org/2000/svg"
-                                                                        class="icon icon-tabler icon-tabler-trash"
-                                                                        width="24" height="24" viewBox="0 0 24 24"
-                                                                        stroke-width="2" stroke="currentColor" fill="none"
-                                                                        stroke-linecap="round" stroke-linejoin="round">
+                                                                         class="icon icon-tabler icon-tabler-trash"
+                                                                         width="24" height="24" viewBox="0 0 24 24"
+                                                                         stroke-width="2" stroke="currentColor" fill="none"
+                                                                         stroke-linecap="round" stroke-linejoin="round">
                                                                         <path stroke="none" d="M0 0h24v24H0z" fill="none">
                                                                         </path>
                                                                         <path d="M4 7l16 0"></path>
@@ -122,15 +134,15 @@
                                                                     Delete
                                                                 </button>
                                                             </form>
-                                                            <form asp-action="ToggleStatus" asp-route-id="@user.Id">
+                                                            <form asp-action="ToggleStatus" asp-route-id="@book.Id">
                                                                 <button type="submit" class="dropdown-item">
-                                                                    @if (user.Status)
+                                                                    @if (book.Status)
                                                                     {
                                                                         <svg xmlns="http://www.w3.org/2000/svg"
-                                                                            class="icon icon-tabler icon-tabler-thumb-down"
-                                                                            width="24" height="24" viewBox="0 0 24 24"
-                                                                            stroke-width="2" stroke="currentColor" fill="none"
-                                                                            stroke-linecap="round" stroke-linejoin="round">
+                                                                             class="icon icon-tabler icon-tabler-thumb-down"
+                                                                             width="24" height="24" viewBox="0 0 24 24"
+                                                                             stroke-width="2" stroke="currentColor" fill="none"
+                                                                             stroke-linecap="round" stroke-linejoin="round">
                                                                             <path stroke="none" d="M0 0h24v24H0z" fill="none">
                                                                             </path>
                                                                             <path
@@ -141,10 +153,10 @@
                                                                     else
                                                                     {
                                                                         <svg xmlns="http://www.w3.org/2000/svg"
-                                                                            class="icon icon-tabler icon-tabler-thumb-up"
-                                                                            width="24" height="24" viewBox="0 0 24 24"
-                                                                            stroke-width="2" stroke="currentColor" fill="none"
-                                                                            stroke-linecap="round" stroke-linejoin="round">
+                                                                             class="icon icon-tabler icon-tabler-thumb-up"
+                                                                             width="24" height="24" viewBox="0 0 24 24"
+                                                                             stroke-width="2" stroke="currentColor" fill="none"
+                                                                             stroke-linecap="round" stroke-linejoin="round">
                                                                             <path stroke="none" d="M0 0h24v24H0z" fill="none">
                                                                             </path>
                                                                             <path
@@ -152,30 +164,15 @@
                                                                             </path>
                                                                         </svg>
                                                                     }
-                                                                    @(user.Status ? "Disable" : "Enable")
+                                                                    @(book.Status ? "Disable" : "Enable")
                                                                 </button>
                                                             </form>
-                                                            <a class="dropdown-item" asp-action="ResetPassword"
-                                                                asp-route-id="@user.Id">
-                                                                <svg xmlns="http://www.w3.org/2000/svg"
-                                                                    class="icon icon-tabler icon-tabler-key" width="24"
-                                                                    height="24" viewBox="0 0 24 24" stroke-width="2"
-                                                                    stroke="currentColor" fill="none" stroke-linecap="round"
-                                                                    stroke-linejoin="round">
-                                                                    <path stroke="none" d="M0 0h24v24H0z" fill="none">
-                                                                    </path>
-                                                                    <path
-                                                                        d="M16.555 3.843l3.602 3.602a2.877 2.877 0 0 1 0 4.069l-2.643 2.643a2.877 2.877 0 0 1 -4.069 0l-.301 -.301l-6.558 6.558a2 2 0 0 1 -1.239 .578l-.175 .008h-1.172a1 1 0 0 1 -.993 -.883l-.007 -.117v-1.172a2 2 0 0 1 .467 -1.284l.119 -.13l.414 -.414h2v-2h2v-2l2.144 -2.144l-.301 -.301a2.877 2.877 0 0 1 0 -4.069l2.643 -2.643a2.877 2.877 0 0 1 4.069 0z">
-                                                                    </path>
-                                                                    <path d="M15 9h.01"></path>
-                                                                </svg>
-                                                                Reset Password
-                                                            </a>
                                                         </div>
-                                                    </span>
-                                                </td>
-                                            </tr>
-                                        }
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    }
                                     </tbody>
                                 </table>
                             </div>

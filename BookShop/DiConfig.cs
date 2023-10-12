@@ -26,12 +26,16 @@ public static class DiConfig
     {
         services.AddScoped<IUnitRepository, UnitRepository>();
         services.AddScoped<ICategoryRepository, CategoryRepository>();
+        services.AddScoped<IBookRepository, BookRepository>();
+        services.AddScoped<IBookImageRepository, BookImageRepository>();
     }
 
     private static void UseServices(IServiceCollection services)
     {
         services.AddScoped<IUnitService, UnitService>();
         services.AddScoped<ICategoryService, CategoryService>();
+        services.AddScoped<IBookService, BookService>();
+        services.AddScoped<IBookImageService, BookImageService>();
     }
 
     private static void UseMisc(IServiceCollection services)
