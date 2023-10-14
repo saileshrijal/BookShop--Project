@@ -15,7 +15,7 @@ public class EditBookVm
     [Required(ErrorMessage = "Please enter a price")]
     public decimal Price { get; set; }
     [Required(ErrorMessage = "Please select a category")]
-    public int CategoryId { get; set; }
+    public List<int>? CategoryIds { get; set; }
     [Required(ErrorMessage = "Please select a featured image")]
     public string? FeaturedImagePath { get; set; }
     public IFormFile? FeaturedImage { get; set; }

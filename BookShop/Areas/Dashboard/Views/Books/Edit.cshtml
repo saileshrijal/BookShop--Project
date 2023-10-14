@@ -75,12 +75,12 @@
                                     </div>
                                 </div>
                                 <div class="mb-3">
-                                    <label class="form-label required" asp-for="CategoryId">Category</label>
+                                    <label class="form-label required" asp-for="CategoryIds">Category</label>
                                     <div>
-                                        <select asp-items="@Model.CategoriesSelectList" asp-for="CategoryId"
-                                                class="form-select select2">
+                                        <select asp-items="@Model.CategoriesSelectList" asp-for="CategoryIds"
+                                                class="form-select select2" multiple="multiple">
                                         </select>
-                                        <span class="text-danger" asp-validation-for="CategoryId"></span>
+                                        <span class="text-danger" asp-validation-for="CategoryIds"></span>
                                     </div>
                                 </div>
                                 <div class="mb-3">

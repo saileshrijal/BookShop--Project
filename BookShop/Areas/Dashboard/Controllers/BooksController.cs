@@ -39,7 +39,7 @@ public class BooksController : Controller
             Id = x.Id,
             Name = x.Name,
             Price = x.Price,
-            CategoryName = x.Category?.Name,
+            CategoryName = x.BookCategories?.Select(x => x.Category.Name).ToList(),
             Status = x.Status,
             CreatedDate = x.CreatedDate,
             FeaturedImage = x.FeaturedImage
@@ -81,7 +81,7 @@ public class BooksController : Controller
                 ShortDescription = vm.ShortDescription,
                 Description = vm.Description,
                 Price = vm.Price,
-                CategoryId = vm.CategoryId,
+                CategoryIds = vm.CategoryIds
             };
             if (vm.FeaturedImage != null)
             {
@@ -103,7 +103,7 @@ public class BooksController : Controller
     {
         try
         {
-            var book = await _bookRepository.GetByIdAsync(id);
+            var book = await _bookRepository.GetWithCategoryByIdAsync(id);
             if (book == null)
             {
                 _notyfService.Error("Book not found");
@@ -113,17 +113,18 @@ public class BooksController : Controller
                 .GetAllAsync();
             var vm = new EditBookVm()
             {
-                CategoryId = book.CategoryId,
+                //CategoryId = book.CategoryId,
                 Description = book.Description,
                 Id = book.Id,
                 Name = book.Name,
                 Price = book.Price,
                 ShortDescription = book.ShortDescription,
                 FeaturedImagePath = book.FeaturedImage,
+                CategoryIds = book.BookCategories?.Select(x => x.CategoryId).ToList(),
                 CategoriesSelectList = categories.Select(x => new SelectListItem()
                 {
                     Text = x.Name,
-                    Value = x.Id.ToString()
+                    Value = x.Id.ToString(),
                 }).ToList()
             };
             return View(vm);
@@ -147,8 +148,8 @@ public class BooksController : Controller
                 ShortDescription = vm.ShortDescription,
                 Description = vm.Description,
                 Price = vm.Price,
-                CategoryId = vm.CategoryId,
-                FeaturedImage = vm.FeaturedImagePath
+                FeaturedImage = vm.FeaturedImagePath,
+                CategoryIds = vm.CategoryIds
             };
             if (vm.FeaturedImage != null)
             {

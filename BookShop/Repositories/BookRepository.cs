@@ -14,14 +14,16 @@ public class BookRepository : Repository<Book>, IBookRepository
     public async Task<List<Book>> GetAllWithCategoryAsync()
     {
         return await _context.Books
-            .Include(x => x.Category)
+            .Include(x => x.BookCategories)
+            .ThenInclude(x=>x.Category)
             .ToListAsync();
     }
 
     public async Task<Book> GetWithCategoryByIdAsync(int id)
     {
         return await _context.Books
-            .Include(x => x.Category)
+            .Include(x => x.BookCategories)
+            .ThenInclude(x=>x.Category)
             .FirstOrDefaultAsync(x => x.Id == id);
     }
 }

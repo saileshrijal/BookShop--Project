@@ -4,6 +4,7 @@ using BookShop.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BookShop.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231007083438_UpdateBookImage")]
+    partial class UpdateBookImage
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -29,6 +32,9 @@ namespace BookShop.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("CategoryId")
+                        .HasColumnType("int");
 
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime2");
@@ -53,30 +59,9 @@ namespace BookShop.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Books");
-                });
-
-            modelBuilder.Entity("BookShop.Models.BookCategory", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("BookId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("CategoryId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("BookId");
-
                     b.HasIndex("CategoryId");
 
-                    b.ToTable("BookCategory");
+                    b.ToTable("Books");
                 });
 
             modelBuilder.Entity("BookShop.Models.BookImage", b =>
@@ -408,21 +393,13 @@ namespace BookShop.Migrations
                     b.HasDiscriminator().HasValue("ApplicationUser");
                 });
 
-            modelBuilder.Entity("BookShop.Models.BookCategory", b =>
+            modelBuilder.Entity("BookShop.Models.Book", b =>
                 {
-                    b.HasOne("BookShop.Models.Book", "Book")
-                        .WithMany("BookCategories")
-                        .HasForeignKey("BookId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("BookShop.Models.Category", "Category")
-                        .WithMany("BookCategories")
+                        .WithMany()
                         .HasForeignKey("CategoryId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Book");
 
                     b.Navigation("Category");
                 });
@@ -430,7 +407,7 @@ namespace BookShop.Migrations
             modelBuilder.Entity("BookShop.Models.BookImage", b =>
                 {
                     b.HasOne("BookShop.Models.Book", "Book")
-                        .WithMany()
+                        .WithMany("BookImages")
                         .HasForeignKey("BookId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -491,12 +468,7 @@ namespace BookShop.Migrations
 
             modelBuilder.Entity("BookShop.Models.Book", b =>
                 {
-                    b.Navigation("BookCategories");
-                });
-
-            modelBuilder.Entity("BookShop.Models.Category", b =>
-                {
-                    b.Navigation("BookCategories");
+                    b.Navigation("BookImages");
                 });
 #pragma warning restore 612, 618
         }
