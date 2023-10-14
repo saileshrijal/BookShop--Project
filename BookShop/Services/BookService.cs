@@ -24,7 +24,7 @@ public class BookService : IBookService
             Name = addBookDto.Name,
             Description = addBookDto.Description,
             Price = addBookDto.Price,
-            FeaturedImage = addBookDto.FeaturedImage,
+            FeaturedImagePath = addBookDto.FeaturedImage,
             BookCategories = addBookDto.CategoryIds?.Select(x => new BookCategory()
             {
                 CategoryId = x
@@ -38,15 +38,15 @@ public class BookService : IBookService
     public async Task EditAsync(EditBookDto editBookDto)
     {
         var book = await _bookRepository.GetWithCategoryByIdAsync(editBookDto.Id);
-        if (book == null)
-        {
-            throw new Exception("Book not found");
-        }
+        if (book == null) throw new Exception("Book not found");
         book.Name = editBookDto.Name;
         book.ShortDescription = editBookDto.ShortDescription;
         book.Description = editBookDto.Description;
         book.Price = editBookDto.Price;
-        book.FeaturedImage = editBookDto.FeaturedImage;
+        if (!string.IsNullOrWhiteSpace(editBookDto.FeaturedImage))
+        {
+            book.FeaturedImagePath = editBookDto.FeaturedImage;
+        }
         if (editBookDto.CategoryIds != null)
         {
             var updatedCategories = editBookDto.CategoryIds.Select(categoryId => new BookCategory

@@ -1,5 +1,4 @@
-﻿using BookShop.Dtos.BookDto;
-using BookShop.Dtos.BookImageDto;
+﻿using BookShop.Dtos.BookImageDto;
 using BookShop.Models;
 using BookShop.Repositories.Interface;
 using BookShop.Services.Interface;
@@ -34,16 +33,16 @@ public class BookImageService : IBookImageService
 
     public async Task EditAsync(EditBookImageDto editBookDto)
     {
-        var bookImage = new BookImage()
+        var bookImage = await _bookImageRepository.GetByIdAsync(editBookDto.Id);
+        if (bookImage == null) throw new Exception("Book not found");
+        bookImage.BookId = editBookDto.BookId;
+        bookImage.Alt = editBookDto.Alt;
+        bookImage.DisplayOrder = editBookDto.DisplayOrder;
+        bookImage.Name = editBookDto.Name;
+        if(!string.IsNullOrWhiteSpace(editBookDto.Path))
         {
-            Id = editBookDto.Id,
-            BookId = editBookDto.BookId,
-            Alt = editBookDto.Alt,
-            DisplayOrder = editBookDto.DisplayOrder,
-            Name = editBookDto.Name,
-            Path = editBookDto.Path
-        };
-        await _unitOfWork.UpdateAsync(bookImage);
+            bookImage.Path = editBookDto.Path;
+        }
         await _unitOfWork.SaveAsync();
     }
 

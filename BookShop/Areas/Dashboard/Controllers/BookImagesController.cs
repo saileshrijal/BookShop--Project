@@ -35,57 +35,69 @@ public class BookImagesController : Controller
 
     public async Task<IActionResult> Index(int bookId)
     {
-        var book = await _bookRepository.GetWithCategoryByIdAsync(bookId);
-
-        if (book is null)
+        try
         {
-            _notyfService.Error("Book not found");
+            var book = await _bookRepository.GetWithCategoryByIdAsync(bookId) 
+                       ?? throw new Exception("Book not found");
+
+            var bookImages = await _bookImageRepository
+                .FindByAsync(x => x.BookId == bookId);
+
+            var vm = new BookImageIndexVm
+            {
+                BookId = bookId,
+                Book = new BookInfo()
+                {
+                    Id = book.Id,
+                    Name = book.Name,
+                    ShortDescription = book.ShortDescription,
+                    CategoryNames = book.BookCategories?.Select(x => x.Category.Name).ToList()
+                },
+                BookImages = bookImages.Select(x => new BookImageVm
+                {
+                    Id = x.Id,
+                    Name = x.Name,
+                    Path = x.Path,
+                    Alt = x.Alt,
+                    DisplayOrder = x.DisplayOrder,
+                    BookId = x.BookId
+                }).ToList()
+            };
+
+            return View(vm);
+        }
+        catch (Exception ex)
+        {
+            _notyfService.Error(ex.Message);
             return RedirectToAction(nameof(System.Index), "Books");
         }
-
-        var bookImages = await _bookImageRepository
-            .FindByAsync(x => x.BookId == bookId);
-
-        var vm = new BookImageIndexVm
-        {
-            BookId = bookId,
-            Book = new BookInfo()
-            {
-                Id = book.Id,
-                Name = book.Name,
-                ShortDescription = book.ShortDescription,
-                CategoryNames = book.BookCategories?.Select(x => x.Category.Name).ToList()
-            },
-            BookImages = bookImages.Select(x => new BookImageVm
-            {
-                Id = x.Id,
-                Name = x.Name,
-                Path = x.Path,
-                Alt = x.Alt,
-                DisplayOrder = x.DisplayOrder,
-                BookId = x.BookId
-            }).ToList()
-        };
-
-        return View(vm);
     }
 
     [HttpGet]
     public async Task<IActionResult> Add(int bookId)
     {
-        var book = await _bookRepository.GetWithCategoryByIdAsync(bookId);
-        var vm = new AddBookImageVm
+        try
         {
-            BookId = bookId,
-            Book = new BookInfo()
+            var book = await _bookRepository.GetWithCategoryByIdAsync(bookId) 
+                       ?? throw new Exception("Book not found");
+            var vm = new AddBookImageVm
             {
-                Id = book.Id,
-                Name = book.Name,
-                ShortDescription = book.ShortDescription,
-                CategoryNames = book.BookCategories?.Select(x => x.Category.Name).ToList()
-            }
-        };
-        return View(vm);
+                BookId = bookId,
+                Book = new BookInfo()
+                {
+                    Id = book.Id,
+                    Name = book.Name,
+                    ShortDescription = book.ShortDescription,
+                    CategoryNames = book.BookCategories?.Select(x => x.Category?.Name!).ToList()
+                }
+            };
+            return View(vm);
+        }
+        catch (Exception ex)
+        {
+            _notyfService.Error(ex.Message);
+            return RedirectToAction(nameof(Index), "BookImages", new { bookId });
+        }
     }
 
     [HttpPost]
@@ -116,30 +128,35 @@ public class BookImagesController : Controller
     [HttpGet]
     public async Task<IActionResult> Edit(int id, int bookId)
     {
-        var bookImage = await _bookImageRepository.GetByIdAsync(id);
-        if (bookImage is null)
+        try
         {
-            _notyfService.Error("Book image not found");
+            var bookImage = await _bookImageRepository.GetByIdAsync(id) 
+                            ?? throw new Exception("Book image not found");
+
+            var book = await _bookRepository.GetWithCategoryByIdAsync(bookId);
+            var vm = new EditBookImageVm
+            {
+                Id = bookImage.Id,
+                Name = bookImage.Name,
+                Alt = bookImage.Alt,
+                DisplayOrder = bookImage.DisplayOrder,
+                BookId = bookImage.BookId,
+                Path = bookImage.Path,
+                Book = new BookInfo()
+                {
+                    Id = book.Id,
+                    Name = book.Name,
+                    ShortDescription = book.ShortDescription,
+                    CategoryNames = book.BookCategories?.Select(x => x.Category?.Name!).ToList()
+                }
+            };
+            return View(vm);
+        }
+        catch (Exception ex)
+        {
+            _notyfService.Error(ex.Message);
             return RedirectToAction(nameof(Index), "BookImages", new { bookId });
         }
-        var book = await _bookRepository.GetWithCategoryByIdAsync(bookId);
-        var vm = new EditBookImageVm
-        {
-            Id = bookImage.Id,
-            Name = bookImage.Name,
-            Alt = bookImage.Alt,
-            DisplayOrder = bookImage.DisplayOrder,
-            BookId = bookImage.BookId,
-            Path = bookImage.Path,
-            Book = new BookInfo()
-            {
-                Id = book.Id,
-                Name = book.Name,
-                ShortDescription = book.ShortDescription,
-                CategoryNames = book.BookCategories?.Select(x => x.Category.Name).ToList()
-            }
-        };
-        return View(vm);
     }
 
     [HttpPost]
@@ -155,7 +172,6 @@ public class BookImagesController : Controller
                 Name = vm.Alt,
                 DisplayOrder = vm.DisplayOrder,
                 BookId = vm.BookId,
-                Path = vm.Path
             };
 
             if (vm.Image != null)
@@ -181,12 +197,8 @@ public class BookImagesController : Controller
     {
         try
         {
-            var bookImage = await _bookImageRepository.GetByIdAsync(id);
-            if (bookImage is null)
-            {
-                _notyfService.Error("Book image not found");
-                return RedirectToAction(nameof(Index), "BookImages", new { bookId });
-            }
+            var bookImage = await _bookImageRepository.GetByIdAsync(id)
+                            ?? throw new Exception("Book image not found");
             await _bookImageService.DeleteAsync(id);
             if (!string.IsNullOrWhiteSpace(bookImage.Path))
                 await _fileHelper.DeleteFileAsync(bookImage.Path, "books");

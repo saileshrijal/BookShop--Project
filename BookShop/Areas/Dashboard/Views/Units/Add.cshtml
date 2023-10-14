@@ -50,7 +50,6 @@
                             <label class="form-label required" asp-for="Name">Name</label>
                             <div>
                                 <input type="text" class="form-control" placeholder="Enter Name" asp-for="Name">
-                                <small class="form-hint" asp-validation-for="Name"></small>
                                 <span class="text-danger" asp-validation-for="Name"></span>
                             </div>
                         </div>
@@ -60,7 +59,6 @@
                                 <textarea rows="8" class="form-control" placeholder="Description"
                                     asp-for="Description"></textarea>
                                 <span class="form-hint" asp-validation-for="Description"></span>
-                                <small class="form-hint" asp-validation-for="Description"></small>
                             </div>
                         </div>
                     </div>

@@ -36,7 +36,7 @@ namespace BookShop.Migrations
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("FeaturedImage")
+                    b.Property<string>("FeaturedImagePath")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
@@ -92,6 +92,9 @@ namespace BookShop.Migrations
 
                     b.Property<int>("BookId")
                         .HasColumnType("int");
+
+                    b.Property<DateTime?>("CreatedDate")
+                        .HasColumnType("datetime2");
 
                     b.Property<int>("DisplayOrder")
                         .HasColumnType("int");

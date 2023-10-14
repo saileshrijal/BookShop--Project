@@ -30,21 +30,30 @@ public class BooksController : Controller
         _categoryRepository = categoryRepository;
         _fileHelper = fileHelper;
     }
-    // GET
+    
     public async Task<IActionResult> Index()
     {
-        var books = await _bookRepository.GetAllWithCategoryAsync();
-        var vm = books.Select(x=>new BookIndexVm()
+        try
         {
-            Id = x.Id,
-            Name = x.Name,
-            Price = x.Price,
-            CategoryName = x.BookCategories?.Select(x => x.Category.Name).ToList(),
-            Status = x.Status,
-            CreatedDate = x.CreatedDate,
-            FeaturedImage = x.FeaturedImage
-        }).ToList();
-        return View(vm);
+            var books = await _bookRepository.GetAllWithCategoryAsync();
+            var vm = books.Select(x=>new BookIndexVm()
+            {
+                Id = x.Id,
+                Name = x.Name,
+                Price = x.Price,
+                CategoryNames = x.BookCategories?.Select(x=>x.Category?.Name).ToList(),
+                Status = x.Status,
+                CreatedDate = x.CreatedDate,
+                FeaturedImage = x.FeaturedImagePath
+            }).ToList();
+            return View(vm);
+        }
+        catch (Exception ex)
+        {
+            _notyfService.Error(ex.Message);
+            return View();
+        }
+        
     }
 
     public async Task<IActionResult> Add()
@@ -63,9 +72,9 @@ public class BooksController : Controller
             };
             return View(vm);
         }
-        catch (Exception e)
+        catch (Exception ex)
         {
-            _notyfService.Error(e.Message);
+            _notyfService.Error(ex.Message);
             return RedirectToAction(nameof(Index));
         }
     }
@@ -75,6 +84,7 @@ public class BooksController : Controller
     {
         try
         {
+            if (!ModelState.IsValid) return View(vm);
             var dto = new AddBookDto()
             {
                 Name = vm.Name,
@@ -91,9 +101,9 @@ public class BooksController : Controller
             _notyfService.Success("Book added successfully");
             return RedirectToAction(nameof(Index));
         }
-        catch (Exception e)
+        catch (Exception ex)
         {
-            _notyfService.Error(e.Message);
+            _notyfService.Error(ex.Message);
             return View(vm);
         }
     }
@@ -103,23 +113,18 @@ public class BooksController : Controller
     {
         try
         {
-            var book = await _bookRepository.GetWithCategoryByIdAsync(id);
-            if (book == null)
-            {
-                _notyfService.Error("Book not found");
-                return RedirectToAction(nameof(Index));
-            }
+            var book = await _bookRepository.GetWithCategoryByIdAsync(id) 
+                ?? throw new Exception("Book not found");
             var categories = await _categoryRepository
                 .GetAllAsync();
             var vm = new EditBookVm()
             {
-                //CategoryId = book.CategoryId,
                 Description = book.Description,
                 Id = book.Id,
                 Name = book.Name,
                 Price = book.Price,
                 ShortDescription = book.ShortDescription,
-                FeaturedImagePath = book.FeaturedImage,
+                FeaturedImagePath = book.FeaturedImagePath,
                 CategoryIds = book.BookCategories?.Select(x => x.CategoryId).ToList(),
                 CategoriesSelectList = categories.Select(x => new SelectListItem()
                 {
@@ -129,9 +134,9 @@ public class BooksController : Controller
             };
             return View(vm);
         }
-        catch (Exception e)
+        catch (Exception ex)
         {
-            _notyfService.Error(e.Message);
+            _notyfService.Error(ex.Message);
             return RedirectToAction(nameof(Index));
         }
     }
@@ -141,6 +146,7 @@ public class BooksController : Controller
     {
         try
         {
+            if (!ModelState.IsValid) return View(vm);
             var dto = new EditBookDto()
             {
                 Id = vm.Id,
@@ -148,7 +154,6 @@ public class BooksController : Controller
                 ShortDescription = vm.ShortDescription,
                 Description = vm.Description,
                 Price = vm.Price,
-                FeaturedImage = vm.FeaturedImagePath,
                 CategoryIds = vm.CategoryIds
             };
             if (vm.FeaturedImage != null)
@@ -176,22 +181,17 @@ public class BooksController : Controller
         try
         {
             var book = await _bookRepository.GetByIdAsync(id);
-            if (book == null)
+            if(!string.IsNullOrWhiteSpace(book.FeaturedImagePath))
             {
-                _notyfService.Error("Book not found");
-                return RedirectToAction(nameof(Index));
-            }
-            if(!string.IsNullOrWhiteSpace(book.FeaturedImage))
-            {
-                await _fileHelper.DeleteFileAsync(book.FeaturedImage, "books");
+                await _fileHelper.DeleteFileAsync(book.FeaturedImagePath, "books");
             }
             await _bookService.DeleteAsync(id);
             _notyfService.Success("Book deleted successfully");
             return RedirectToAction(nameof(Index));
         }
-        catch (Exception e)
+        catch (Exception ex)
         {
-            _notyfService.Error(e.Message);
+            _notyfService.Error(ex.Message);
             return RedirectToAction(nameof(Index));
         }
     }
@@ -201,19 +201,13 @@ public class BooksController : Controller
     {
         try
         {
-            var book = await _bookRepository.GetByIdAsync(id);
-            if (book == null)
-            {
-                _notyfService.Error("Book not found");
-                return RedirectToAction(nameof(Index));
-            }
             await _bookService.ToggleStatusAsync(id);
             _notyfService.Success("Book status changed successfully");
             return RedirectToAction(nameof(Index));
         }
-        catch (Exception e)
+        catch (Exception ex)
         {
-            _notyfService.Error(e.Message);
+            _notyfService.Error(ex.Message);
             return RedirectToAction(nameof(Index));
         }
     }

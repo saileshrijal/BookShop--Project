@@ -8,7 +8,7 @@ public class BookIndexVm
     public string? Description { get; set; }
     public decimal Price { get; set; }
     public string? FeaturedImage { get; set; }
-    public List<string>? CategoryName { get; set; }
+    public List<string>? CategoryNames { get; set; }
     public bool Status { get; set; }
     public DateTime CreatedDate { get; set; }
 }

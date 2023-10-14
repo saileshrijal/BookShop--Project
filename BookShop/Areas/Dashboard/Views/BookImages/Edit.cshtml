@@ -1,6 +1,6 @@
 ﻿@model EditBookImageVm
 @{
-    ViewData["title"] = "Add Book Image";
+    ViewData["title"] = "Edit Book Image";
 }
 <div class="page-wrapper">
     <!-- Page header -->
@@ -44,7 +44,6 @@
             <div class="col-md-12">
                 <form class="card" asp-action="Edit" enctype="multipart/form-data">
                     <input type="hidden" asp-for="BookId">
-                    <input type="hidden" asp-for="Path">
                     <div class="card-header">
                         <h3 class="card-title">Edit Image</h3>
                     </div>
@@ -55,7 +54,6 @@
                                     <label class="form-label required" asp-for="Name">Name</label>
                                     <div>
                                         <input type="text" class="form-control" placeholder="Enter Name" asp-for="Name">
-                                        <small class="form-hint" asp-validation-for="Name"></small>
                                         <span class="text-danger" asp-validation-for="Name"></span>
                                     </div>
                                 </div>
@@ -63,7 +61,6 @@
                                     <label class="form-label required" asp-for="Alt">Alt</label>
                                     <div>
                                         <input type="text" class="form-control" placeholder="Alt" asp-for="Alt">
-                                        <small class="form-hint" asp-validation-for="Alt"></small>
                                         <span class="text-danger" asp-validation-for="Alt"></span>
                                     </div>
                                 </div>
@@ -71,7 +68,6 @@
                                     <label class="form-label required" asp-for="Name">Display Order</label>
                                     <div>
                                         <input type="number" class="form-control" placeholder="Price" asp-for="DisplayOrder">
-                                        <small class="form-hint" asp-validation-for="DisplayOrder"></small>
                                         <span class="text-danger" asp-validation-for="DisplayOrder"></span>
                                     </div>
                                 </div>

@@ -39,7 +39,6 @@ public class CategoryService : ICategoryService
         var category = await _categoryRepository.GetByIdAsync(editUnitDto.Id) ?? throw new Exception("Category not found");
         category.Name = editUnitDto.Name;
         category.Description = editUnitDto.Description;
-        await _unitOfWork.UpdateAsync(category);
         await _unitOfWork.SaveAsync();
     }
 
@@ -47,7 +46,6 @@ public class CategoryService : ICategoryService
     {
         var category = await _categoryRepository.GetByIdAsync(id) ?? throw new Exception("Category not found");
         category.Status = !category.Status;
-        await _unitOfWork.UpdateAsync(category);
         await _unitOfWork.SaveAsync();
     }
 }
