@@ -8,5 +8,5 @@ public class EditBookDto
     public string? Description { get; set; }
     public decimal Price { get; set; }
     public string? FeaturedImage { get; set; }
-    public int CategoryId { get; set; }
+    public List<int>? CategoryIds { get; set; }
 }

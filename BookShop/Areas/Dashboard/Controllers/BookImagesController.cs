@@ -54,7 +54,7 @@ public class BookImagesController : Controller
                 Id = book.Id,
                 Name = book.Name,
                 ShortDescription = book.ShortDescription,
-                CategoryName = book.Category?.Name
+                CategoryNames = book.BookCategories?.Select(x => x.Category.Name).ToList()
             },
             BookImages = bookImages.Select(x => new BookImageVm
             {
@@ -82,7 +82,7 @@ public class BookImagesController : Controller
                 Id = book.Id,
                 Name = book.Name,
                 ShortDescription = book.ShortDescription,
-                CategoryName = book.Category?.Name
+                CategoryNames = book.BookCategories?.Select(x => x.Category.Name).ToList()
             }
         };
         return View(vm);
@@ -136,7 +136,7 @@ public class BookImagesController : Controller
                 Id = book.Id,
                 Name = book.Name,
                 ShortDescription = book.ShortDescription,
-                CategoryName = book.Category?.Name
+                CategoryNames = book.BookCategories?.Select(x => x.Category.Name).ToList()
             }
         };
         return View(vm);

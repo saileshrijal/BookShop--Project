@@ -1,5 +1,10 @@
 ﻿@model BookShop.PartialViewModels.BookInfo
 
 <div class="alert alert-info">
-    <h3>@Model?.Name (@Model?.Id) - @Model?.CategoryName</h3>
+    <h3>@Model?.Name (@Model?.Id) - 
+    @foreach(var category in Model?.CategoryNames)
+    {
+        <span class="badge badge-pill bg-info">@category</span>
+    }
+    </h3>
 </div>

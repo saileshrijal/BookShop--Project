@@ -74,7 +74,12 @@
                                             <td>
                                                 @book.ShortDescription
                                             </td>
-                                            <td>@book.CategoryName</td>
+                                            <td>
+                                                @foreach (var category in book?.CategoryName)
+                                                {
+                                                    <span class="badge badge-pill bg-primary">@category</span>
+                                                }
+                                            </td>
                                             <td>@book.Price</td>
                                             <td>@book.CreatedDate</td>
                                             <td>

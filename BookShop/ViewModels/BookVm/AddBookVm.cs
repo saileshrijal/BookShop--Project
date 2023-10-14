@@ -14,7 +14,7 @@ public class AddBookVm
     [Required(ErrorMessage = "Please enter a price")]
     public decimal Price { get; set; }
     [Required(ErrorMessage = "Please select a category")]
-    public int CategoryId { get; set; }
+    public List<int>? CategoryIds { get; set; }
     [Required(ErrorMessage = "Please select a featured image")]
     public IFormFile? FeaturedImage { get; set; }
     public List<SelectListItem>? CategoriesSelectList { get; set; } = new();

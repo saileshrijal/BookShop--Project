@@ -1,5 +1,4 @@
-﻿using System.Transactions;
-using BookShop.Dtos.BookDto;
+﻿using BookShop.Dtos.BookDto;
 using BookShop.Models;
 using BookShop.Repositories.Interface;
 using BookShop.Services.Interface;
@@ -20,30 +19,44 @@ public class BookService : IBookService
 
     public async Task AddAsync(AddBookDto addBookDto)
     {
-        var book = new Book()
+        var book = new Book
         {
             Name = addBookDto.Name,
             Description = addBookDto.Description,
             Price = addBookDto.Price,
-            CategoryId = addBookDto.CategoryId,
             FeaturedImage = addBookDto.FeaturedImage,
+            BookCategories = addBookDto.CategoryIds?.Select(x => new BookCategory()
+            {
+                CategoryId = x
+            }).ToList()
         };
+
         await _unitOfWork.AddAsync(book);
         await _unitOfWork.SaveAsync();
     }
 
     public async Task EditAsync(EditBookDto editBookDto)
     {
-        var book = new Book()
+        var book = await _bookRepository.GetWithCategoryByIdAsync(editBookDto.Id);
+        if (book == null)
         {
-            Id = editBookDto.Id,
-            Name = editBookDto.Name,
-            ShortDescription = editBookDto.ShortDescription,
-            Description = editBookDto.Description,
-            Price = editBookDto.Price,
-            CategoryId = editBookDto.CategoryId,
-            FeaturedImage = editBookDto.FeaturedImage,
-        };
+            throw new Exception("Book not found");
+        }
+        book.Name = editBookDto.Name;
+        book.ShortDescription = editBookDto.ShortDescription;
+        book.Description = editBookDto.Description;
+        book.Price = editBookDto.Price;
+        book.FeaturedImage = editBookDto.FeaturedImage;
+        if (editBookDto.CategoryIds != null)
+        {
+            var updatedCategories = editBookDto.CategoryIds.Select(categoryId => new BookCategory
+            {
+                BookId = book.Id,
+                CategoryId = categoryId
+            }).ToList();
+            book.BookCategories?.Clear();
+            book.BookCategories?.AddRange(updatedCategories);
+        }
         await _unitOfWork.UpdateAsync(book);
         await _unitOfWork.SaveAsync();
     }
