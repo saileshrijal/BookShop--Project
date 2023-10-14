@@ -25,16 +25,24 @@ public class UnitsController : Controller
 
     public async Task<IActionResult> Index()
     {
-        var units = await _unitRepository.GetAllAsync();
-        var vm = units.Select(x => new UnitIndexVm()
+        try
         {
-            Id = x.Id,
-            Name = x.Name,
-            Description = x.Description,
-            Status = x.Status,
-            CreatedDate = x.CreatedDate
-        }).ToList();
-        return View(vm);
+            var units = await _unitRepository.GetAllAsync();
+            var vm = units.Select(x => new UnitIndexVm()
+            {
+                Id = x.Id,
+                Name = x.Name,
+                Description = x.Description,
+                Status = x.Status,
+                CreatedDate = x.CreatedDate
+            }).ToList();
+            return View(vm);
+        }
+        catch (Exception ex)
+        {
+            _notyfService.Error(ex.Message);
+            return View();
+        }
     }
 
     [HttpGet]
@@ -49,10 +57,7 @@ public class UnitsController : Controller
     {
         try
         {
-            if (!ModelState.IsValid)
-            {
-                return View(vm);
-            }
+            if (!ModelState.IsValid) return View(vm);
             var dto = new AddUnitDto()
             {
                 Name = vm.Name,
@@ -70,6 +75,7 @@ public class UnitsController : Controller
     }
 
     [HttpPost]
+    [ValidateAntiForgeryToken]
     public async Task<IActionResult> Delete(int id)
     {
         try
@@ -88,19 +94,22 @@ public class UnitsController : Controller
     [HttpGet]
     public async Task<IActionResult> Edit(int id)
     {
-        var unit = await _unitRepository.GetByIdAsync(id);
-        if (unit is null)
+        try
         {
-            _notyfService.Error("Unit not found");
+            var unit = await _unitRepository.GetByIdAsync(id) ?? throw new Exception("Unit not found");
+            var vm = new EditUnitVm()
+            {
+                Id = unit.Id,
+                Name = unit.Name,
+                Description = unit.Description
+            };
+            return View(vm);
+        }
+        catch (Exception ex)
+        {
+            _notyfService.Error(ex.Message);
             return RedirectToAction(nameof(Index));
         }
-        var vm = new EditUnitVm()
-        {
-            Id = unit.Id,
-            Name = unit.Name,
-            Description = unit.Description
-        };
-        return View(vm);
     }
 
     [HttpPost]
@@ -109,10 +118,7 @@ public class UnitsController : Controller
     {
         try
         {
-            if (!ModelState.IsValid)
-            {
-                return View(vm);
-            }
+            if (!ModelState.IsValid) return View(vm);
             var dto = new EditUnitDto()
             {
                 Id = vm.Id,
@@ -131,6 +137,7 @@ public class UnitsController : Controller
     }
 
     [HttpPost]
+    [ValidateAntiForgeryToken]
     public async Task<IActionResult> ToggleStatus(int id)
     {
         try

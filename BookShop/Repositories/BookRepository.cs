@@ -23,7 +23,7 @@ public class BookRepository : Repository<Book>, IBookRepository
     {
         return await _context.Books
             .Include(x => x.BookCategories)
-            .ThenInclude(x=>x.Category)
+            .ThenInclude(x => x.Category)
             .FirstOrDefaultAsync(x => x.Id == id);
     }
 }

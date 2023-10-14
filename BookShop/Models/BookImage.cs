@@ -9,4 +9,5 @@ public class BookImage
     public Book? Book { get; set; }
     public string? Alt { get; set; }
     public int DisplayOrder { get; set; }
+    public DateTime? CreatedDate { get; set; } = DateTime.UtcNow;
 }

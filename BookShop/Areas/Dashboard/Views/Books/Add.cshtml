@@ -52,7 +52,6 @@
                                     <label class="form-label required" asp-for="Name">Name</label>
                                     <div>
                                         <input type="text" class="form-control" placeholder="Enter Name" asp-for="Name">
-                                        <small class="form-hint" asp-validation-for="Name"></small>
                                         <span class="text-danger" asp-validation-for="Name"></span>
                                     </div>
                                 </div>
@@ -60,7 +59,6 @@
                                     <label class="form-label required" asp-for="Name">Short Description</label>
                                     <div>
                                         <input type="text" class="form-control" placeholder="Short Description" asp-for="ShortDescription">
-                                        <small class="form-hint" asp-validation-for="ShortDescription"></small>
                                         <span class="text-danger" asp-validation-for="ShortDescription"></span>
                                     </div>
                                 </div>
@@ -68,7 +66,6 @@
                                     <label class="form-label required" asp-for="Name">Price</label>
                                     <div>
                                         <input type="text" class="form-control" placeholder="Price" asp-for="Price">
-                                        <small class="form-hint" asp-validation-for="Price"></small>
                                         <span class="text-danger" asp-validation-for="Price"></span>
                                     </div>
                                 </div>
@@ -87,7 +84,6 @@
                                         <textarea rows="8" class="form-control" placeholder="Description"
                                                                     asp-for="Description"></textarea>
                                         <span class="form-hint" asp-validation-for="Description"></span>
-                                        <small class="form-hint" asp-validation-for="Description"></small>
                                     </div>
                                 </div>
                             </div>
@@ -97,8 +93,7 @@
                                 </div>
                                 <input type="file" id="imageInput" class="form-control" accept="png,jpg,jpeg" asp-for="FeaturedImage">
                                 <span class="text-danger" asp-validation-for="FeaturedImage"></span>
-
-                                </div>
+                            </div>
                         </div>
                     </div>
                     <div class="card-footer text-end">
