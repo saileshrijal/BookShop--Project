@@ -10,5 +10,7 @@ public class BookIndexVm
     public string? FeaturedImage { get; set; }
     public List<string>? CategoryNames { get; set; }
     public bool Status { get; set; }
+    public bool BestSeller { get; set; }
     public DateTime CreatedDate { get; set; }
+    public List<BookImageVm>? BookImages { get; set; }
 }

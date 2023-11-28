@@ -26,4 +26,22 @@ public class BookRepository : Repository<Book>, IBookRepository
             .ThenInclude(x => x.Category)
             .FirstOrDefaultAsync(x => x.Id == id);
     }
+
+    public async Task<List<Book>> GetAllWithCategoryAndImagesAsync()
+    {
+        return await _context.Books
+            .Include(x=>x.BookImages)
+            .Include(x => x.BookCategories)
+            .ThenInclude(x=>x.Category)
+            .ToListAsync();
+    }
+
+    public async Task<Book> GetWithCategoryAndImagesAsync(int id)
+    {
+        return await _context.Books
+            .Include(x=>x.BookImages)
+            .Include(x => x.BookCategories)
+            .ThenInclude(x => x.Category)
+            .FirstOrDefaultAsync(x => x.Id == id);
+    }
 }
