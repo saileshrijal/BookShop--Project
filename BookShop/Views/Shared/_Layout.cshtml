@@ -1,8 +1,9 @@
 ﻿@using BookShop.Repositories.Interface
-@inject ICategoryRepository categoryRepository
+@inject ICategoryRepository CategoryRepository
 @{
     var isAccountPage = Context.Request.Path.StartsWithSegments("/Account");
-    var categories = await categoryRepository.GetAllAsync();
+    var isBookDetailsPage = Context.Request.Path.StartsWithSegments("/Book");
+    var categories = await CategoryRepository.GetAllAsync();
 }
 <!doctype html>
 <html class="no-js" lang="zxx">
@@ -37,15 +38,10 @@
 </head>
 
 <body>
-<!--[if lte IE 9]>
-<p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade
-    your browser</a> to improve your experience and security.</p>
-<![endif]-->
-
 <!-- Main wrapper -->
 <div class="wrapper" id="wrapper">
     <!-- Header -->
-    <header id="wn__header" class='@(isAccountPage?"oth-page":"") header__area header__absolute sticky__header'>
+    <header id="wn__header" class='@(isAccountPage||isBookDetailsPage?"oth-page":"") header__area header__absolute sticky__header'>
         <div class="container-fluid">
             <div class="row">
                 <div class="col-md-6 col-sm-6 col-6 col-lg-2">
