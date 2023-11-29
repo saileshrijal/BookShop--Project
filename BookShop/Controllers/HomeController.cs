@@ -40,7 +40,9 @@ public class HomeController : Controller
                 BestSeller = x.BestSeller,
                 BookImages = x.BookImages?.Select(x => new BookImageVm
                 {
-                    FileName = x.Path
+                    FileName = x.Path,
+                    Alt = x.Alt,
+                    DisplayOrder = x.DisplayOrder
                 }).ToList()
             }).ToList()
         };
@@ -70,7 +72,9 @@ public class HomeController : Controller
             BestSeller = book.BestSeller,
             BookImages = book.BookImages?.Select(x => new BookImageVm
             {
-                FileName = x.Path
+                FileName = x.Path,
+                Alt = x.Alt,
+                DisplayOrder = x.DisplayOrder
             }).ToList()
         };
         var categories = await _categoryRepository

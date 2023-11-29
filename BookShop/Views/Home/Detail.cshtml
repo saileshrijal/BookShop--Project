@@ -4,7 +4,7 @@
 <div class="wrapper" id="wrapper">
 
     <!-- Start breadcrumb area -->
-    <div class="ht__breadcrumb__area bg-image--4">
+    <div class="ht__breadcrumb__area bg-image--4" style='background-image: url("/uploads/books/@Model?.FeaturedImage")'>
         <div class="container">
             <div class="row">
                 <div class="col-lg-12">
@@ -31,9 +31,9 @@
                             <div class="col-lg-6 col-12">
                                 <div class="wn__fotorama__wrapper">
                                     <div class="fotorama wn__fotorama__action" data-nav="thumbs">
-                                        @foreach (var image in Model.BookImages)
+                                        @foreach (var image in Model?.BookImages?.OrderBy(x=>x.DisplayOrder))
                                         {
-                                            <a href="2.html"><img src="~/public_panel/images/product/2.jpg" alt=""></a>
+                                            <a href="/uploads/books/@image?.FileName"><img src="/uploads/books/@image?.FileName" alt=""></a>
                                         }
                                     </div>
                                 </div>
