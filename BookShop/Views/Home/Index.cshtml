@@ -61,25 +61,25 @@
 {
     <div class="product product__style--3">
     <div class="product__thumb">
-        <a class="first__img" href="single-product.html">
-            <img src="/uploads/books/@book.BookImages?.FirstOrDefault()?.FileName"
+        <a class="first__img" href="/book/@book?.Slug">
+            <img src="/uploads/books/@book?.BookImages?.FirstOrDefault()?.FileName"
                  alt="product image">
         </a>
-        <a class="second__img animation1" href="single-product.html">
+        <a class="second__img animation1" href="/book/@book?.Slug">
             <img
-                src="/uploads/books/@book.BookImages?.Skip(1).FirstOrDefault()?.FileName" alt="product image">
+                src="/uploads/books/@book?.BookImages?.Skip(1).FirstOrDefault()?.FileName" alt="product image">
         </a>
         <div class="hot__box">
-            <span class="hot-label">@book.CategoryNames.FirstOrDefault()</span>
+            <span class="hot-label">@book?.CategoryNames?.FirstOrDefault()</span>
         </div>
     </div>
     <div class="product__content content--center">
         <h4>
-            <a href="single-product.html">@book?.Name</a>
+            <a href="/book/@book?.Slug">@book?.Name</a>
         </h4>
         <ul class="price d-flex">
-            <li>@book.Price</li>
-            <li class="old_price">@book.Price</li>
+            <li>@book?.Price</li>
+            <li class="old_price">@book?.Price</li>
         </ul>
         <div class="action">
             <div class="actions_inner">

@@ -1,32 +1,31 @@
-﻿using System.Diagnostics;
-using Microsoft.AspNetCore.Mvc;
-using BookShop.Models;
-using BookShop.Repositories.Interface;
+﻿using BookShop.Repositories.Interface;
 using BookShop.ViewModels;
 using BookShop.ViewModels.BookVm;
+using BookShop.ViewModels.CategoryVm;
+using Microsoft.AspNetCore.Mvc;
 
 namespace BookShop.Controllers;
 
 public class HomeController : Controller
 {
-    private readonly ILogger<HomeController> _logger;
     private readonly IBookRepository _bookRepository;
+    private readonly ICategoryRepository _categoryRepository;
 
     public HomeController(
-        ILogger<HomeController> logger,
-        IBookRepository bookRepository)
+        IBookRepository bookRepository,
+        ICategoryRepository categoryRepository)
     {
         _bookRepository = bookRepository;
-        _logger = logger;
+        _categoryRepository = categoryRepository;
     }
 
     [HttpGet]
     public async Task<IActionResult> Index()
     {
         var books = await _bookRepository.GetAllWithCategoryAndImagesAsync();
-        var vm = new HomeVm()
+        var vm = new HomeVm
         {
-            Books = books.Select(x => new BookIndexVm()
+            Books = books.Select(x => new BookIndexVm
             {
                 Id = x.Id,
                 Name = x.Name,
@@ -36,11 +35,12 @@ public class HomeController : Controller
                 Description = x.Description,
                 ShortDescription = x.ShortDescription,
                 CreatedDate = x.CreatedDate,
+                Slug = x.Slug,
                 Status = x.Status,
                 BestSeller = x.BestSeller,
-                BookImages = x.BookImages?.Select(x => new BookImageVm()
+                BookImages = x.BookImages?.Select(x => new BookImageVm
                 {
-                    FileName = x.Path,
+                    FileName = x.Path
                 }).ToList()
             }).ToList()
         };
@@ -49,14 +49,38 @@ public class HomeController : Controller
         return View(vm);
     }
 
-    public IActionResult Privacy()
+    //get by slug
+    [HttpGet("/book/{slug}")]
+    public async Task<IActionResult> Detail(string slug)
     {
-        return View();
-    }
+        var book = await _bookRepository.GetWithCategoryAndImagesAsync(slug);
+        if (book == null) return NotFound();
 
-    [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-    public IActionResult Error()
-    {
-        return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        var vm = new BookDetailsVm
+        {
+            Id = book.Id,
+            Name = book.Name,
+            CategoryNames = book.BookCategories?.Select(x => x.Category?.Name).ToList(),
+            FeaturedImage = book.FeaturedImagePath,
+            Price = book.Price,
+            Description = book.Description,
+            ShortDescription = book.ShortDescription,
+            CreatedDate = book.CreatedDate,
+            Status = book.Status,
+            BestSeller = book.BestSeller,
+            BookImages = book.BookImages?.Select(x => new BookImageVm
+            {
+                FileName = x.Path
+            }).ToList()
+        };
+        var categories = await _categoryRepository
+            .GetWithBooks();
+        vm.CategoriesWithCount = categories.Select(x => new CategoryWithCountVm
+        {
+            Id = x.Id,
+            Name = x.Name,
+            Count = x.BookCategories?.Count ?? 0
+        }).ToList();
+        return View(vm);
     }
 }

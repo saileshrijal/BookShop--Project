@@ -1,6 +1,8 @@
-﻿namespace BookShop.ViewModels.BookVm;
+﻿using BookShop.ViewModels.CategoryVm;
 
-public class BookIndexVm
+namespace BookShop.ViewModels.BookVm;
+
+public class BookDetailsVm
 {
     public int Id { get; set; }
     public string? Name { get; set; }
@@ -14,4 +16,5 @@ public class BookIndexVm
     public string? Slug { get; set; }
     public DateTime CreatedDate { get; set; }
     public List<BookImageVm>? BookImages { get; set; }
+    public List<CategoryWithCountVm> CategoriesWithCount { get; set; }
 }

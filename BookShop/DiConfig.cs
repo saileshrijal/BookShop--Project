@@ -46,5 +46,7 @@ public static class DiConfig
         services.AddScoped<IUserSeeder, UserSeeder>();
         services.AddScoped<IFileHelper, FileHelper>();
         services.AddScoped<IUnitOfWork, UnitOfWork>();
+        services.AddScoped<ISlugHelper, SlugHelper>();
+        services.AddScoped<IStringHelper, StringHelper>();
     }
 }
