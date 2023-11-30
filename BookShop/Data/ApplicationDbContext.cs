@@ -16,4 +16,5 @@ public class ApplicationDbContext : IdentityDbContext
     public DbSet<Category>? Categories { get; set; }
     public DbSet<Book>? Books { get; set; }
     public DbSet<BookImage>? BookImages { get; set; }
+    public DbSet<Cart>? Carts { get; set; }
 }

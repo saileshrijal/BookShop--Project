@@ -9,6 +9,7 @@ public class Book : BaseModel
     public string? FeaturedImagePath { get; set; }
     public bool BestSeller { get; set; }
     public string? Slug { get; set; }
+    public int Quantity { get; set; }
     public List<BookCategory>? BookCategories { get; set; }
     public List<BookImage>? BookImages { get; set; }
 }

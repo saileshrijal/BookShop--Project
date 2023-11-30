@@ -1,7 +1,13 @@
-﻿using BookShop.Repositories.Interface;
+﻿using AspNetCoreHero.ToastNotification.Abstractions;
+using BookShop.Dtos.CartDto;
+using BookShop.Models;
+using BookShop.Repositories.Interface;
+using BookShop.Services.Interface;
 using BookShop.ViewModels;
 using BookShop.ViewModels.BookVm;
 using BookShop.ViewModels.CategoryVm;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BookShop.Controllers;
@@ -10,13 +16,22 @@ public class HomeController : Controller
 {
     private readonly IBookRepository _bookRepository;
     private readonly ICategoryRepository _categoryRepository;
+    private readonly ICartService _cartService;
+    private readonly INotyfService _notyfService;
+    private readonly UserManager<ApplicationUser> _userManager;
 
     public HomeController(
         IBookRepository bookRepository,
-        ICategoryRepository categoryRepository)
+        ICategoryRepository categoryRepository,
+        ICartService cartService,
+        INotyfService notyfService,
+        UserManager<ApplicationUser> userManager)
     {
         _bookRepository = bookRepository;
         _categoryRepository = categoryRepository;
+        _cartService = cartService;
+        _notyfService = notyfService;
+        _userManager = userManager;
     }
 
     [HttpGet]
@@ -86,5 +101,23 @@ public class HomeController : Controller
             Count = x.BookCategories?.Count ?? 0
         }).ToList();
         return View(vm);
+    }
+    
+    [HttpPost]
+    [Authorize]
+    public async Task<IActionResult> AddToCart(int id, int quantity)
+    {
+        var book = await _bookRepository.GetWithCategoryAndImagesAsync(id);
+        if (book == null) return NotFound();
+        var loggedInUser = await _userManager.GetUserAsync(User);
+        var cart = new AddCartDto()
+        {
+            BookId = book.Id,
+            Quantity = quantity,
+            ApplicationUserId = loggedInUser?.Id
+        };
+        await _cartService.AddAsync(cart);
+        _notyfService.Success("Add to cart successfully!");
+        return RedirectToAction(nameof(Detail), "Home", new {slug = book.Slug});
     }
 }

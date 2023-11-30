@@ -61,9 +61,11 @@
                                         <input id="qty" class="input-text qty" name="qty" min="1" value="1"
                                                title="Qty" type="number">
                                         <div class="addtocart__actions">
-                                            <button class="tocart" type="submit" title="Add to Cart">Add to
-                                                Cart
-                                            </button>
+                                            <form method="post" asp-action="AddToCart" asp-route-id="@Model?.Id" asp-route-quantity="1">
+                                                <button class="tocart" type="submit" title="Add to Cart">Add to
+                                                    Cart
+                                                </button>
+                                            </form>
                                         </div>
                                         <div class="product-addto-links clearfix">
                                             <a class="wishlist" href="#"></a>

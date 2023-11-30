@@ -28,6 +28,7 @@ public static class DiConfig
         services.AddScoped<ICategoryRepository, CategoryRepository>();
         services.AddScoped<IBookRepository, BookRepository>();
         services.AddScoped<IBookImageRepository, BookImageRepository>();
+        services.AddScoped<ICartRepository, CartRepository>();
     }
 
     private static void UseServices(IServiceCollection services)
@@ -36,6 +37,7 @@ public static class DiConfig
         services.AddScoped<ICategoryService, CategoryService>();
         services.AddScoped<IBookService, BookService>();
         services.AddScoped<IBookImageService, BookImageService>();
+        services.AddScoped<ICartService, CartService>();
     }
 
     private static void UseMisc(IServiceCollection services)
