@@ -8,4 +8,5 @@ public class CartItemVm
     public int BookId { get; set; }
     public BookDetailsVm? Book { get; set; }
     public int Quantity { get; set; }
+    public decimal Amount { get; set; }
 }

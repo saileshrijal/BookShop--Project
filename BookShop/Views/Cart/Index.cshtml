@@ -1,5 +1,4 @@
-﻿@model List<BookShop.ViewModels.CartVm.CartItemVm>
-
+﻿@model BookShop.ViewModels.CartVm.CartIndexVm
 <!-- Main wrapper -->
 <div class="wrapper" id="wrapper">
 
@@ -21,12 +20,13 @@
         </div>
     </div>
     <!-- End breadcrumb area -->
-    <!-- cart-main-area start -->
-    <div class="cart-main-area section-padding--lg bg--white">
-        <div class="container">
-            <div class="row">
-                <div class="col-md-12 col-sm-12 ol-lg-12">
-                    <form action="#">
+    @if (Model.CartItems.Any())
+    {
+        <!-- cart-main-area start -->
+        <div class="cart-main-area section-padding--lg bg--white">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12 col-sm-12 ol-lg-12">
                         <div class="table-content wnro__table table-responsive">
                             <table>
                                 <thead>
@@ -40,7 +40,7 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-                                @foreach (var cart in Model)
+                                @foreach (var cart in Model?.CartItems)
                                 {
                                     <tr>
                                         <td class="product-thumbnail">
@@ -48,50 +48,70 @@
                                                 <img src="/uploads/books/@cart.Book?.BookImages?.FirstOrDefault()?.FileName" alt="product img">
                                             </a>
                                         </td>
-                                        <td class="product-name"><a href="#">@cart.Book?.Name</a></td>
-                                        <td class="product-price"><span class="amount">Rs. @cart.Book?.Price</span></td>
-                                        <td class="product-quantity"><input type="number" value="@cart.Quantity"></td>
-                                        <td class="product-subtotal">$165.00</td>
-                                        <td class="product-remove"><a href="#">X</a></td>
+                                        <td class="product-name">
+                                            <a href="#">@cart.Book?.Name</a>
+                                        </td>
+                                        <td class="product-price">
+                                            <span class="amount">Rs. @cart.Book?.Price</span>
+                                        </td>
+                                        <td class="product-quantity">
+                                            <form class="d-inline" asp-action="DecrementCartQuantity" asp-route-id="@cart.Id">
+                                                <button type="submit" class="btn text-white" style="background-color: #ce7852">-</button>
+                                            </form>
+                                            <input type="number" readonly="readonly" value="@cart.Quantity">
+                                            <form class="d-inline" asp-action="IncrementCartQuantity" asp-route-id="@cart.Id">
+                                                <button type="submit" class="btn text-white" style="background-color: #ce7852">+</button>
+                                            </form>
+                                        </td>
+                                        <td class="product-subtotal">Rs. @cart.Amount</td>
+                                        <td class="product-remove">
+                                            <form method="post" asp-action="Delete" asp-route-id="@cart?.Id">
+                                                <button type="submit" class="btn btn-sm">X</button>
+                                            </form>
+                                        </td>
                                     </tr>
                                 }
                                 </tbody>
                             </table>
                         </div>
-                    </form>
-                    <div class="cartbox__btn">
-                        <ul
-                                class="cart__btn__list d-flex flex-wrap flex-md-nowrap flex-lg-nowrap justify-content-between">
-                            <li><a href="#">Coupon Code</a></li>
-                            <li><a href="#">Apply Code</a></li>
-                            <li><a href="#">Update Cart</a></li>
-                            <li><a href="#">Check Out</a></li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-lg-6 offset-lg-6">
-                    <div class="cartbox__total__area">
-                        <div class="cartbox-total d-flex justify-content-between">
-                            <ul class="cart__total__list">
-                                <li>Cart total</li>
-                                <li>Sub Total</li>
-                            </ul>
-                            <ul class="cart__total__tk">
-                                <li>$70</li>
-                                <li>$70</li>
+                        <div class="cartbox__btn">
+                            <ul class="cart__btn__list d-flex flex-wrap flex-md-nowrap flex-lg-nowrap justify-content-between">
+                                <li>
+                                    <a href="#">Check Out</a>
+                                </li>
                             </ul>
                         </div>
-                        <div class="cart__total__amount">
-                            <span>Grand Total</span>
-                            <span>$140</span>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-6 offset-lg-6">
+                        <div class="cartbox__total__area">
+                            <div class="cartbox-total d-flex justify-content-between">
+                                <ul class="cart__total__list">
+                                    <li>Cart total</li>
+                                    <li>Sub Total</li>
+                                </ul>
+                                <ul class="cart__total__tk">
+                                    <li>Rs. @Model?.TotalAmount</li>
+                                    <li>Rs. @Model?.TotalAmount</li>
+                                </ul>
+                            </div>
+                            <div class="cart__total__amount">
+                                <span>Grand Total</span>
+                                <span>Rs. @Model?.TotalAmount</span>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-    <!-- cart-main-area end -->
+        <!-- cart-main-area end -->
+    }
+    else
+    {
+        <div style="height:200px; font-size: 1rem; margin-top: 20px">
+            <p class="text-center">No items in a cart!!</p>
+        </div>
+    }
 </div>
 <!-- //Main wrapper -->

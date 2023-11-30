@@ -35,7 +35,7 @@ public class CartController : Controller
     {
         var loggedInUser = await _userManager.GetUserAsync(User);
         var cartItems = await _cartRepository.FindByWithBooks(x=>x.ApplicationUserId == loggedInUser.Id);
-        var vm = cartItems?.Select(x=> new CartItemVm()
+        var carItems = cartItems?.Select(x=> new CartItemVm()
         {
             Id = x.Id,
             BookId = x.BookId,
@@ -59,8 +59,36 @@ public class CartController : Controller
                     DisplayOrder = x.DisplayOrder
                 }).ToList()
             },
-            Quantity = x.Count
+            Quantity = x.Count,
+            Amount = x.Book.Price * x.Count
         }).ToList();
+        var vm = new CartIndexVm
+        {
+            CartItems = carItems,
+            TotalAmount = carItems?.Sum(x => x.Amount) ?? 0
+        };
         return View(vm);
+    }
+    
+    [HttpPost]
+    public async Task<IActionResult> DecrementCartQuantity(int id)
+    {
+        await _cartService.DecrementCountAsync(id);
+        return RedirectToAction(nameof(Index));
+    }
+    
+    [HttpPost]
+    public async Task<IActionResult> IncrementCartQuantity(int id)
+    {
+        await _cartService.IncrementCountAsync(id);
+        return RedirectToAction(nameof(Index));
+    }
+    
+    [HttpPost]
+    public async Task<IActionResult> Delete(int id)
+    {
+        await _cartService.DeleteAsync(id);
+        _notyfService.Success("Item has been deleted from cart");
+        return RedirectToAction(nameof(Index));
     }
 }

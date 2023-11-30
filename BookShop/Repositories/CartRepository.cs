@@ -20,4 +20,9 @@ public class CartRepository : Repository<Cart>, ICartRepository
             .Where(expression)
             .ToListAsync();
     }
+
+    public async Task<int> CountBy(Expression<Func<Cart, bool>> expression)
+    {
+        return await _context.Carts.CountAsync(expression);
+    }
 }

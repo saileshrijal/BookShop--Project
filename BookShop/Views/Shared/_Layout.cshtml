@@ -1,8 +1,18 @@
 ﻿@using BookShop.Repositories.Interface
+@using Microsoft.AspNetCore.Identity
 @inject ICategoryRepository CategoryRepository
+@inject ICartRepository CartRepository
+@inject UserManager<ApplicationUser> UserManager
+@inject SignInManager<ApplicationUser> SignInManager
 @{
     var isAccountPage = Context.Request.Path.StartsWithSegments("/Account");
     var isBookDetailsPage = Context.Request.Path.StartsWithSegments("/Book");
+    var cartCount = 0;
+    if(SignInManager.IsSignedIn(User))
+    {
+        var loggedInUser = await UserManager.GetUserAsync(User);
+        cartCount = await CartRepository.CountBy(x=>x.ApplicationUserId == loggedInUser.Id);
+    }
     var categories = await CategoryRepository.GetAllAsync();
 }
 <!doctype html>
@@ -73,8 +83,13 @@
                     <ul class="header__sidebar__right d-flex justify-content-end align-items-center">
                         <li class="shop_search"><a class="search__active" href="#"></a></li>
                         <li class="wishlist"><a href="#"></a></li>
-                        <li class="shopcart"><a  href="/cart"><span
-                                class="product_qun">3</span></a>
+                        <li class="shopcart">
+                            <a href="/cart">
+                                @if (cartCount > 0)
+                                {
+                                    <span class="product_qun">@cartCount</span>
+                                }
+                            </a>
                             <!-- Start Shopping Cart -->
                             <div class="block-minicart minicart__active">
                                 <div class="minicart-content-wrapper">
@@ -95,7 +110,8 @@
                                         <div class="miniproduct">
                                             <div class="item01 d-flex">
                                                 <div class="thumb">
-                                                    <a href="product-details.html"><img
+                                                    <a href="product-details.html">
+                                                        <img
                                                             src="/public_panel/images/product/sm-img/1.jpg"
                                                             alt="product images"></a>
                                                 </div>
@@ -115,7 +131,8 @@
                                             </div>
                                             <div class="item01 d-flex mt--20">
                                                 <div class="thumb">
-                                                    <a href="product-details.html"><img
+                                                    <a href="product-details.html">
+                                                        <img
                                                             src="/public_panel/images/product/sm-img/3.jpg"
                                                             alt="product images"></a>
                                                 </div>
@@ -135,7 +152,8 @@
                                             </div>
                                             <div class="item01 d-flex mt--20">
                                                 <div class="thumb">
-                                                    <a href="product-details.html"><img
+                                                    <a href="product-details.html">
+                                                        <img
                                                             src="/public_panel/images/product/sm-img/2.jpg"
                                                             alt="product images"></a>
                                                 </div>
