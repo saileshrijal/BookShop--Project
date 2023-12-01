@@ -84,6 +84,7 @@ public class HomeController : Controller
             ShortDescription = book.ShortDescription,
             CreatedDate = book.CreatedDate,
             Status = book.Status,
+            Quantity = book.Quantity,
             BestSeller = book.BestSeller,
             BookImages = book.BookImages?.Select(x => new BookImageVm
             {
@@ -105,7 +106,7 @@ public class HomeController : Controller
     
     [HttpPost]
     [Authorize]
-    public async Task<IActionResult> AddToCart(int id, int quantity)
+    public async Task<IActionResult> AddToCart(int id, int qty)
     {
         var book = await _bookRepository.GetWithCategoryAndImagesAsync(id);
         if (book == null) return NotFound();
@@ -113,7 +114,7 @@ public class HomeController : Controller
         var cart = new AddCartDto()
         {
             BookId = book.Id,
-            Quantity = quantity,
+            Quantity = qty,
             ApplicationUserId = loggedInUser?.Id
         };
         await _cartService.AddAsync(cart);

@@ -14,6 +14,7 @@ public class BookDetailsVm
     public bool Status { get; set; }
     public bool BestSeller { get; set; }
     public string? Slug { get; set; }
+    public int Quantity { get; set; }
     public DateTime CreatedDate { get; set; }
     public List<BookImageVm>? BookImages { get; set; }
     public List<CategoryWithCountVm> CategoriesWithCount { get; set; }
