@@ -52,6 +52,7 @@ public class CartController : Controller
                 Slug = x.Book.Slug,
                 Status = x.Book.Status,
                 BestSeller = x.Book.BestSeller,
+                Quantity = x.Book.Quantity,
                 BookImages = x.Book.BookImages?.Select(x => new BookImageVm
                 {
                     FileName = x.Path,
@@ -78,8 +79,13 @@ public class CartController : Controller
     }
     
     [HttpPost]
-    public async Task<IActionResult> IncrementCartQuantity(int id)
+    public async Task<IActionResult> IncrementCartQuantity(int id, int cartQuantity, int bookQuantity)
     {
+        if (cartQuantity >= bookQuantity)
+        {
+            _notyfService.Warning("You can not add more books than available. Please contact the administrator");
+            return RedirectToAction(nameof(Index));
+        }
         await _cartService.IncrementCountAsync(id);
         return RedirectToAction(nameof(Index));
     }

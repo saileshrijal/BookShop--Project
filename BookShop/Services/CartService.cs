@@ -69,6 +69,11 @@ public class CartService : ICartService
     public async Task DecrementCountAsync(int id)
     {
         var cart = await _cartRepository.GetByIdAsync(id);
+        if(cart.Count== 1)
+        {
+            await DeleteAsync(id);
+            return;
+        }
         cart.Count--;
         await _unitOfWork.UpdateAsync(cart);
         await _unitOfWork.SaveAsync();

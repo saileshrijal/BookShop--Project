@@ -49,7 +49,7 @@
                                             </a>
                                         </td>
                                         <td class="product-name">
-                                            <a href="#">@cart.Book?.Name</a>
+                                            <a href="/book/@cart.Book?.Slug">@cart.Book?.Name</a>
                                         </td>
                                         <td class="product-price">
                                             <span class="amount">Rs. @cart.Book?.Price</span>
@@ -59,7 +59,7 @@
                                                 <button type="submit" class="btn text-white" style="background-color: #ce7852">-</button>
                                             </form>
                                             <input type="number" readonly="readonly" value="@cart.Quantity">
-                                            <form class="d-inline" asp-action="IncrementCartQuantity" asp-route-id="@cart.Id">
+                                            <form class="d-inline" asp-action="IncrementCartQuantity" asp-route-id="@cart.Id" asp-route-cartQuantity="@cart.Quantity" asp-route-bookQuantity="@cart.Book?.Quantity">
                                                 <button type="submit" class="btn text-white" style="background-color: #ce7852">+</button>
                                             </form>
                                         </td>

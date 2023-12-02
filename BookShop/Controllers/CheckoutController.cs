@@ -12,6 +12,7 @@ using BookShop.ViewModels.CheckoutVm;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Stripe.Checkout;
 
 namespace BookShop.Controllers;
 
@@ -25,6 +26,7 @@ public class CheckoutController : Controller
     private readonly UserManager<ApplicationUser> _userManager;
     private readonly IUserAddressService _userAddressService;
     private readonly IOrderService _orderService;
+    private readonly IOrderRepository _orderRepository;
     
     public CheckoutController(
         ICartService cartService, 
@@ -33,7 +35,8 @@ public class CheckoutController : Controller
         IUserAddressRepository userAddressRepository,
         UserManager<ApplicationUser> userManager,
         IUserAddressService userAddressService,
-        IOrderService orderService)
+        IOrderService orderService,
+        IOrderRepository orderRepository)
     {
         _cartService = cartService;
         _cartRepository = cartRepository;
@@ -42,6 +45,7 @@ public class CheckoutController : Controller
         _userManager = userManager;
         _userAddressService = userAddressService;
         _orderService = orderService;
+        _orderRepository = orderRepository;
     }
     
     public async Task<IActionResult> Index()
@@ -170,15 +174,56 @@ public class CheckoutController : Controller
                 Quantity = x.Count
             }).ToList()
         };
-        await _orderService.AddAsync(orderDto);
+        var orderId = await _orderService.AddAndReturnIdAsync(orderDto);
+
+        var domain = "http://localhost:5197";
+        var options = new SessionCreateOptions()
+        {
+            LineItems = new List<SessionLineItemOptions>(),
+            Mode = "payment",
+            SuccessUrl = $"{domain}/checkout/success/{orderId}",
+            CancelUrl = $"{domain}/checkout",
+        };
+
+        foreach (var cartItem in carItems)
+        {
+            var lineItems = new SessionLineItemOptions()
+            {
+                PriceData = new SessionLineItemPriceDataOptions()
+                {
+                    UnitAmount = (long)cartItem.Book?.Price,
+                    Currency = "usd",
+                    ProductData = new SessionLineItemPriceDataProductDataOptions()
+                    {
+                        Name = cartItem.Book.Name
+                    }
+                },
+                Quantity = cartItem.Quantity
+            };
+            options.LineItems.Add(lineItems);
+        }
+        
+        var service = new SessionService();
+        Session session = await service.CreateAsync(options);
+        
+        await _orderService.PayAsync(orderId, session.Id, session.PaymentIntentId);
+        
         await _cartService.ClearCartAsync(loggedInUser.Id);
         _notyfService.Success("Order has been placed successfully");
-        return RedirectToAction(nameof(Success));
+        Response.Headers.Add("Location", session.Url);
+        return new StatusCodeResult(303);
     }
     
     [HttpGet]
-    public IActionResult Success()
+    public async Task<IActionResult> Success(int id)
     {
-        return View();
+        var order = await _orderRepository.GetByIdAsync(id);
+        var service = new SessionService();
+        Session session = service.Get(order.SessionId);
+        if (session.PaymentStatus.ToLower() == "paid")
+        {
+            await _orderService.UpdateOrderStatusAsync(order.Id, OrderStatus.Approved, PaymentStatus.Approved);
+        }
+        return View(id);
     }
 }

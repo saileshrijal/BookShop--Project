@@ -17,5 +17,5 @@ public class BookDetailsVm
     public int Quantity { get; set; }
     public DateTime CreatedDate { get; set; }
     public List<BookImageVm>? BookImages { get; set; }
-    public List<CategoryWithCountVm> CategoriesWithCount { get; set; }
+    public List<CategoryWithCountVm>? CategoriesWithCount { get; set; }
 }

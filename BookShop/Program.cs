@@ -1,11 +1,13 @@
 using AspNetCoreHero.ToastNotification;
 using AspNetCoreHero.ToastNotification.Extensions;
 using BookShop;
+using BookShop.Configuration;
 using BookShop.Data;
 using BookShop.Models;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Stripe;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -37,6 +39,8 @@ builder.Services.ConfigureApplicationCookie(options =>
     };
 });
 
+builder.Services.Configure<StripeSetting>(builder.Configuration.GetSection("StripeSetting"));
+
 builder.Services.UseBookShop();
 
 var app = builder.Build();
@@ -51,6 +55,8 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
+StripeConfiguration.ApiKey = builder.Configuration.GetSection("StripeSetting:SecretKey").Get<string>();
+
 
 app.UseAuthentication();
 app.UseAuthorization();
