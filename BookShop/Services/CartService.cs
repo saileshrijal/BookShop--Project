@@ -73,4 +73,11 @@ public class CartService : ICartService
         await _unitOfWork.UpdateAsync(cart);
         await _unitOfWork.SaveAsync();
     }
+
+    public async Task ClearCartAsync(string applicationUserId)
+    {
+        var cart = await _cartRepository.FindByAsync(x=>x.ApplicationUserId == applicationUserId);
+        await _unitOfWork.DeleteRangeAsync(cart);
+        await _unitOfWork.SaveAsync();
+    }
 }

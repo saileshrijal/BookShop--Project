@@ -5,7 +5,6 @@ using BookShop.Models;
 using BookShop.ViewModels;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Index = Microsoft.EntityFrameworkCore.Metadata.Internal.Index;
 
 namespace BookShop.Controllers;
 
@@ -82,17 +81,24 @@ public class AccountController : Controller
                 return View(vm);
             }
             using var tx = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled);
-            var checkDuplicateUserName = await _userManager.FindByNameAsync(vm.Identity)
-                ?? await _userManager.FindByEmailAsync(vm.Identity);
+            var checkDuplicateUserName = await _userManager.FindByNameAsync(vm.Username);
             if (checkDuplicateUserName != null)
             {
-                _notyfService.Error("Username or Email already taken");
+                _notyfService.Error("Username already taken");
+                return View();
+            }
+            var checkDuplicateEmail = await _userManager.FindByEmailAsync(vm.Email);
+            if (checkDuplicateEmail != null)
+            {
+                _notyfService.Error("Email already taken");
                 return View();
             }
             var user = new ApplicationUser
             {
-                UserName = vm.Identity,
-                Email = vm.Identity,
+                FirstName = vm.FirstName,
+                LastName = vm.LastName,
+                UserName = vm.Username,
+                Email = vm.Email,
             };
             var result = await _userManager.CreateAsync(user, vm.Password);
             if (!result.Succeeded)

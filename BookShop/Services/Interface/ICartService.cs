@@ -9,4 +9,5 @@ public interface ICartService
     Task DeleteAsync(int id);
     Task IncrementCountAsync(int id);
     Task DecrementCountAsync(int id);
+    Task ClearCartAsync(string applicationUserId);
 }

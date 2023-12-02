@@ -26,9 +26,27 @@
                     <h3 class="account__title">Register</h3>
                     <form asp-action="Register">
                         <div class="account__form">
+                            <div class="row">
+                                <div class="col-6">
+                                    <div class="input__box">
+                                        <label>First Name <span>*</span></label>
+                                        <input type="text" asp-for="FirstName">
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="input__box">
+                                        <label>Last Name <span>*</span></label>
+                                        <input type="text" asp-for="LastName">
+                                    </div>
+                                </div>
+                            </div>
                             <div class="input__box">
-                                <label>Username or email address <span>*</span></label>
-                                <input type="text" asp-for="Identity">
+                                <label>Username <span>*</span></label>
+                                <input type="text" asp-for="Username">
+                            </div>
+                            <div class="input__box">
+                                <label>Email address <span>*</span></label>
+                                <input type="email" asp-for="Email">
                             </div>
                             <div class="input__box">
                                 <label>Password<span>*</span></label>
