@@ -10,11 +10,15 @@ public class OrderService : IOrderService
 {
     private readonly IUnitOfWork _unitOfWork;
     private readonly IOrderRepository _orderRepository;
+    private readonly IBookRepository _bookRepository;
 
-    public OrderService(IUnitOfWork unitOfWork, IOrderRepository orderRepository)
+    public OrderService(IUnitOfWork unitOfWork, 
+        IOrderRepository orderRepository,
+        IBookRepository bookRepository)
     {
         _unitOfWork = unitOfWork;
         _orderRepository = orderRepository;
+        _bookRepository = bookRepository;
     }
     
     public async Task AddAsync(AddOrderDto addOrderDto)
@@ -60,7 +64,6 @@ public class OrderService : IOrderService
             TrackingNumber = addOrderDto.TrackingNumber,
             Carrier = addOrderDto.Carrier,
         };
-        await _unitOfWork.AddAsync(order);
         order.OrderDetails = addOrderDto.OrderDetails.Select(x => new OrderDetails()
         {
             BookId = x.BookId,
@@ -68,6 +71,7 @@ public class OrderService : IOrderService
             Price = x.Price,
             Quantity = x.Quantity,
         }).ToList();
+        await _unitOfWork.AddAsync(order);
         await _unitOfWork.SaveAsync();
         return order.Id;
     }

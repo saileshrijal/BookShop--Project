@@ -79,4 +79,22 @@ public class BookService : IBookService
         await _unitOfWork.UpdateAsync(book);
         await _unitOfWork.SaveAsync();
     }
+
+    public async Task AddQuantityAsync(int id, int quantity)
+    {
+        var book = await _bookRepository.GetByIdAsync(id);
+        if (book == null) throw new Exception("Book not found");
+        book.Quantity += quantity;
+        await _unitOfWork.UpdateAsync(book);
+        await _unitOfWork.SaveAsync();
+    }
+
+    public async Task SubtractQuantityAsync(int id, int quantity)
+    {
+        var book = await _bookRepository.GetByIdAsync(id);
+        if (book == null) throw new Exception("Book not found");
+        book.Quantity -= quantity;
+        await _unitOfWork.UpdateAsync(book);
+        await _unitOfWork.SaveAsync();
+    }
 }

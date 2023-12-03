@@ -27,6 +27,7 @@ public class CheckoutController : Controller
     private readonly IUserAddressService _userAddressService;
     private readonly IOrderService _orderService;
     private readonly IOrderRepository _orderRepository;
+    private readonly IBookService _bookService;
     
     public CheckoutController(
         ICartService cartService, 
@@ -36,7 +37,8 @@ public class CheckoutController : Controller
         UserManager<ApplicationUser> userManager,
         IUserAddressService userAddressService,
         IOrderService orderService,
-        IOrderRepository orderRepository)
+        IOrderRepository orderRepository,
+        IBookService bookService)
     {
         _cartService = cartService;
         _cartRepository = cartRepository;
@@ -46,6 +48,7 @@ public class CheckoutController : Controller
         _userAddressService = userAddressService;
         _orderService = orderService;
         _orderRepository = orderRepository;
+        _bookService = bookService;
     }
     
     public async Task<IActionResult> Index()
@@ -175,6 +178,10 @@ public class CheckoutController : Controller
             }).ToList()
         };
         var orderId = await _orderService.AddAndReturnIdAsync(orderDto);
+        foreach (var book in orderDto.OrderDetails)
+        {
+            await _bookService.SubtractQuantityAsync(book.BookId, book.Quantity);
+        }
 
         var domain = "http://localhost:5197";
         var options = new SessionCreateOptions()
@@ -191,8 +198,8 @@ public class CheckoutController : Controller
             {
                 PriceData = new SessionLineItemPriceDataOptions()
                 {
-                    UnitAmount = (long)cartItem.Book?.Price,
-                    Currency = "usd",
+                    UnitAmount = (long)cartItem.Book?.Price * 100,
+                    Currency = "npr",
                     ProductData = new SessionLineItemPriceDataProductDataOptions()
                     {
                         Name = cartItem.Book.Name
