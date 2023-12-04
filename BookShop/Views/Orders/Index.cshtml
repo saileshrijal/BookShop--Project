@@ -31,7 +31,10 @@
                         <div class="col-md-12 col-sm-12 ol-lg-12 mt-2">
                             <div class="card">
                                 <div class="card-header d-flex align-items-center gap-2">
-                                    <h5 class="card-title">Order ID: @order.Id</h5>
+                                    <div>
+                                        <h5 class="card-title">Order ID: @order.Id</h5>
+                                        <p>Placed on @order.DateOfOrder</p>
+                                    </div>
                                     <div class="mx-auto"></div>
                                     <div>
                                         <span class="badge bg-primary">@order.PaymentStatus</span>

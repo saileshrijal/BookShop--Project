@@ -32,6 +32,7 @@ public static class DiConfig
         services.AddScoped<IUserAddressRepository, UserAddressRepository>();
         services.AddScoped<IOrderRepository, OrderRepository>();
         services.AddScoped<IOrderDetailsRepository, OrderDetailsRepository>();
+        services.AddScoped<IWishlistRepository, WishlistRepository>();
     }
 
     private static void UseServices(IServiceCollection services)
@@ -44,6 +45,7 @@ public static class DiConfig
         services.AddScoped<IUserAddressService, UserAddressService>();
         services.AddScoped<IOrderService, OrderService>();
         services.AddScoped<IOrderDetailsService, OrderDetailsService>();
+        services.AddScoped<IWishlistService, WishlistService>();
     }
 
     private static void UseMisc(IServiceCollection services)
