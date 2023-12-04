@@ -18,17 +18,35 @@ public class WishlistService : IWishlistService
  
     public async Task ToggleAsync(AddWishlistDto addWishlistDto)
     {
-        var wishlist = await _wishlistRepository.FindByAsync(x =>
+        var wishlist = await _wishlistRepository.GetByAsync(x =>
             x.ApplicationuserId == addWishlistDto.ApplicationuserId && x.BookId == addWishlistDto.BookId);
-        if (wishlist.Any())
+        if(wishlist == null)
         {
-            throw new Exception("This book is already in your wishlist");
+            await AddAsync(addWishlistDto);
         }
-        await _unitOfWork.AddAsync(new Wishlist
+        else
+        {
+            await RemoveAsync(addWishlistDto);
+        }
+    }
+
+    public async Task AddAsync(AddWishlistDto addWishlistDto)
+    {
+        var wishlist = new Wishlist
         {
             ApplicationuserId = addWishlistDto.ApplicationuserId,
             BookId = addWishlistDto.BookId
-        });
+        };
+        await _unitOfWork.AddAsync(wishlist);
+        await _unitOfWork.SaveAsync();
+    }
+
+    public async Task RemoveAsync(AddWishlistDto addWishlistDto)
+    {
+        var wishlist = await _wishlistRepository.GetByAsync(x =>
+            x.ApplicationuserId == addWishlistDto.ApplicationuserId && x.BookId == addWishlistDto.BookId);
+        if(wishlist == null) throw new Exception("Wishlist not found");
+        await _unitOfWork.DeleteAsync(wishlist);
         await _unitOfWork.SaveAsync();
     }
 }

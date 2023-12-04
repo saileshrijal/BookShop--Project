@@ -6,4 +6,5 @@ namespace BookShop.Repositories.Interface;
 public interface IWishlistRepository : IRepository<Wishlist>
 {
     Task<List<Wishlist>> GetWithBooksAsync(Expression<Func<Wishlist, bool>> expression);
+    Task<bool> CheckWishlistAsync(Expression<Func<Wishlist, bool>> expression);
 }

@@ -19,19 +19,22 @@ public class HomeController : Controller
     private readonly ICartService _cartService;
     private readonly INotyfService _notyfService;
     private readonly UserManager<ApplicationUser> _userManager;
+    private readonly IWishlistRepository _wishlistRepository;
 
     public HomeController(
         IBookRepository bookRepository,
         ICategoryRepository categoryRepository,
         ICartService cartService,
         INotyfService notyfService,
-        UserManager<ApplicationUser> userManager)
+        UserManager<ApplicationUser> userManager,
+        IWishlistRepository wishlistRepository)
     {
         _bookRepository = bookRepository;
         _categoryRepository = categoryRepository;
         _cartService = cartService;
         _notyfService = notyfService;
         _userManager = userManager;
+        _wishlistRepository = wishlistRepository;
     }
 
     [HttpGet]
@@ -72,7 +75,6 @@ public class HomeController : Controller
     {
         var book = await _bookRepository.GetWithCategoryAndImagesAsync(slug);
         if (book == null) return NotFound();
-
         var vm = new BookDetailsVm
         {
             Id = book.Id,
@@ -91,7 +93,9 @@ public class HomeController : Controller
                 FileName = x.Path,
                 Alt = x.Alt,
                 DisplayOrder = x.DisplayOrder
-            }).ToList()
+            }).ToList(),
+            AddedToFav = await _wishlistRepository
+                .CheckWishlistAsync(x => x.BookId == book.Id && x.ApplicationuserId == _userManager.GetUserId(User))
         };
         var categories = await _categoryRepository
             .GetWithBooks();

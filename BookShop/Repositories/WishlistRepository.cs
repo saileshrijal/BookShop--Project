@@ -20,4 +20,9 @@ public class WishlistRepository : Repository<Wishlist>, IWishlistRepository
             .ThenInclude(b=>b.BookImages)
             .ToListAsync();
     }
+
+    public async Task<bool> CheckWishlistAsync(Expression<Func<Wishlist, bool>> expression)
+    {
+        return await _context.Wishlists.AnyAsync(expression);
+    }
 }

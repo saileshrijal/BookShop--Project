@@ -68,25 +68,28 @@
                 <div class="product__overview">
                     <p>@Model?.ShortDescription</p>
                 </div>
+                <div class="box-tocart d-flex">
                 <form method="post" asp-action="AddToCart" asp-route-id="@Model?.Id">
-                    <div class="box-tocart d-flex">
-                        <span>Qty</span>
-                        <input id="qty" class="input-text qty" name="qty" min="1" value="1"
-                               title="Qty" type="number">
-                        <div class="addtocart__actions">
-                            <button class="tocart" type="submit" title="Add to Cart">
-                                Add to
-                                Cart
-                            </button>
-                        </div>
-
-
-                        <div class="product-addto-links clearfix">
-                            <a class="wishlist" href="#"></a>
-                            <a class="compare" href="#"></a>
-                        </div>
+                    <span>Qty</span>
+                    <input id="qty" class="input-text qty" name="qty" min="1" value="1"
+                           title="Qty" type="number">
+                    <div class="addtocart__actions">
+                        <button class="tocart" type="submit" title="Add to Cart">
+                            Add to
+                            Cart
+                        </button>
                     </div>
                 </form>
+
+
+                    <div class="product-addto-links clearfix">
+                        <form asp-controller="Wishlist" asp-action="ToggleWishlist" asp-route-bookId="@Model?.Id">
+                            <button type="submit" class="border-0 bg-transparent @(Model.AddedToFav ? "text-danger" : "text-secondary")" style="font-size: 2.1rem">
+                                <i class="fa fa-heart"></i>
+                            </button>
+                        </form>
+                    </div>
+                </div>
 
                 <div class="product_meta">
                     <span class="posted_in">

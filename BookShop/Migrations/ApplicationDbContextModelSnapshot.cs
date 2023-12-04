@@ -314,6 +314,32 @@ namespace BookShop.Migrations
                     b.ToTable("UserAddresses");
                 });
 
+            modelBuilder.Entity("BookShop.Models.Wishlist", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("AddedDateTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("ApplicationuserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("BookId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ApplicationuserId");
+
+                    b.HasIndex("BookId");
+
+                    b.ToTable("Wishlists");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
                 {
                     b.Property<string>("Id")
@@ -618,6 +644,23 @@ namespace BookShop.Migrations
                     b.Navigation("Book");
 
                     b.Navigation("Order");
+                });
+
+            modelBuilder.Entity("BookShop.Models.Wishlist", b =>
+                {
+                    b.HasOne("BookShop.Models.ApplicationUser", "Applicationuser")
+                        .WithMany()
+                        .HasForeignKey("ApplicationuserId");
+
+                    b.HasOne("BookShop.Models.Book", "Book")
+                        .WithMany()
+                        .HasForeignKey("BookId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Applicationuser");
+
+                    b.Navigation("Book");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
