@@ -31,7 +31,6 @@ public class OrdersController : Controller
         _notyfService = notyfService;
     }
     
-    // GET
     public async Task<IActionResult> Index()
     {
         var loggedInUser = await _userManager.GetUserAsync(User);
@@ -65,7 +64,11 @@ public class OrdersController : Controller
                 },
                 Price = od.Price,
                 Quantity = od.Quantity,
-                OrderId = od.OrderId
+                OrderId = od.OrderId,
+                OrderStatus = od.OrderStatus,
+                PaymentStatus = od.PaymentStatus,
+                DateOfPayment = od.DateOfPayment,
+                DateOfDelivered = od.DateOfDelivered
             }).ToList()
         }).ToList();
         return View(vm);

@@ -1,4 +1,6 @@
-﻿namespace BookShop.Models;
+﻿using BookShop.Enum;
+
+namespace BookShop.Models;
 
 public class OrderDetails
 {
@@ -9,4 +11,11 @@ public class OrderDetails
     public Book? Book { get; set; }
     public decimal Price { get; set; }
     public int Quantity { get; set; }
+    public OrderStatus OrderStatus { get; set; }
+    public PaymentStatus PaymentStatus { get; set; }
+    public string? TrackingNumber { get; set; }
+    public string? SessionId { get; set; }
+    public string? PaymentIntentId { get; set; }
+    public DateTime DateOfPayment { get; set; }
+    public DateTime DateOfDelivered { get; set; }
 }

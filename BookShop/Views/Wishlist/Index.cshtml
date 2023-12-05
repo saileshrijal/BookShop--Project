@@ -20,22 +20,30 @@
     </div>
     <!-- End breadcrumb area -->
     <!-- cart-main-area start -->
-    <div class="wishlist-area section-padding--lg bg__white">
-        <div class="container">
-            <div class="row">
-                <div class="col-md-12 col-sm-12 col-xs-12">
-                    <div class="wishlist-content">
-                        <form action="#">
+    @if (Model.Any())
+    {
+        <div class="wishlist-area section-padding--lg bg__white">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12 col-sm-12 col-xs-12">
+                        <div class="wishlist-content">
                             <div class="wishlist-table wnro__table table-responsive">
                                 <table>
                                     <thead>
                                     <tr>
                                         <th class="product-remove"></th>
                                         <th class="product-thumbnail"></th>
-                                        <th class="product-name"><span class="nobr">Product Name</span></th>
-                                        <th class="product-price"><span class="nobr"> Unit Price </span></th>
-                                        <th class="product-stock-stauts"><span class="nobr"> Stock Status
-													</span></th>
+                                        <th class="product-name">
+                                            <span class="nobr">Product Name</span>
+                                        </th>
+                                        <th class="product-price">
+                                            <span class="nobr"> Unit Price </span>
+                                        </th>
+                                        <th class="product-stock-stauts">
+                                            <span class="nobr">
+                                                Stock Status
+                                            </span>
+                                        </th>
                                         <th class="product-add-to-cart"></th>
                                     </tr>
                                     </thead>
@@ -44,15 +52,23 @@
                                     {
                                         <tr>
                                             <td class="product-remove">
-                                                <form asp-action="RemoveWishlist" asp-route-bookId="@item.Book.Id">
+                                                <form asp-action="RemoveWishlist" asp-route-bookId="@item.Book?.Id">
                                                     <button type="submit" class="btn">x</button>
                                                 </form>
                                             </td>
-                                            <td class="product-thumbnail"><a href="#"><img src="/uploads/books/@item.Book?.BookImages?.FirstOrDefault()?.FileName" alt=""></a></td>
-                                            <td class="product-name"><a href="#">@item.Book.Name</a></td>
-                                            <td class="product-price"><span class="amount">Rs. @item.Book.Price</span></td>
+                                            <td class="product-thumbnail">
+                                                <a href="#">
+                                                    <img src="/uploads/books/@item.Book?.BookImages?.FirstOrDefault()?.FileName" alt="">
+                                                </a>
+                                            </td>
+                                            <td class="product-name">
+                                                <a href="#">@item.Book?.Name</a>
+                                            </td>
+                                            <td class="product-price">
+                                                <span class="amount">Rs. @item.Book?.Price</span>
+                                            </td>
                                             <td class="product-stock-status">
-                                                @if (item.Book.Quantity > 0)
+                                                @if (item.Book?.Quantity > 0)
                                                 {
                                                     <span class="wishlist-in-stock">In Stock</span>
                                                 }
@@ -61,18 +77,27 @@
                                                     <span class="wishlist-in-stock">Out of Stock</span>
                                                 }
                                             </td>
-                                            <td class="product-add-to-cart"><a href="#"> Add to Cart</a></td>
+                                            <td class="product-add-to-cart">
+                                                <a href="#"> Add to Cart</a>
+                                            </td>
                                         </tr>
                                     }
                                     </tbody>
                                 </table>
                             </div>
-                        </form>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
+    }
+    else
+    {
+        <div style="height:200px; font-size: 1rem; margin-top: 20px">
+            <p class="text-center">No items in a wishlist!!</p>
+        </div>
+    }
+
     <!-- cart-main-area end -->
 </div>
 <!-- //Main wrapper -->

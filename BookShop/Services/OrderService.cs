@@ -10,6 +10,7 @@ public class OrderService : IOrderService
 {
     private readonly IUnitOfWork _unitOfWork;
     private readonly IOrderRepository _orderRepository;
+    private readonly IOrderDetailsRepository _orderDetailsRepository;
     private readonly IBookRepository _bookRepository;
 
     public OrderService(IUnitOfWork unitOfWork, 
@@ -84,6 +85,14 @@ public class OrderService : IOrderService
         order.SessionId = sessionId;
         order.PaymentIntentId = paymentIntentId;
         order.DateOfPayment = DateTime.Now;
+        foreach (var orderDetails in order.OrderDetails)
+        {
+            orderDetails.OrderStatus = OrderStatus.Processing;
+            orderDetails.PaymentStatus = PaymentStatus.Approved;
+            orderDetails.SessionId = sessionId;
+            orderDetails.PaymentIntentId = paymentIntentId;
+            orderDetails.DateOfPayment = DateTime.Now;
+        }
         await _unitOfWork.SaveAsync();
     }
 
@@ -92,6 +101,11 @@ public class OrderService : IOrderService
         var order = await _orderRepository.GetByIdAsync(orderId);
         order.OrderStatus = orderStatus;
         order.PaymentStatus = paymentStatus;
+        foreach (var orderDetails in order.OrderDetails)
+        {
+            orderDetails.OrderStatus = orderStatus;
+            orderDetails.PaymentStatus = paymentStatus;
+        }
         await _unitOfWork.SaveAsync();
     }
 }

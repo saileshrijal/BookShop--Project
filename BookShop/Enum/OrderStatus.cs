@@ -7,5 +7,6 @@ public enum OrderStatus
     Approved = 3,
     Cancelled = 4,
     Processing = 5,
-    Shipped = 6
+    Shipped = 6,
+    Delivered = 7
 }

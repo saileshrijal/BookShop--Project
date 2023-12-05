@@ -212,7 +212,7 @@ public class CheckoutController : Controller
         }
         
         var service = new SessionService();
-        Session session = await service.CreateAsync(options);
+        var session = await service.CreateAsync(options);
         
         await _orderService.PayAsync(orderId, session.Id, session.PaymentIntentId);
         
@@ -227,7 +227,7 @@ public class CheckoutController : Controller
     {
         var order = await _orderRepository.GetByIdAsync(id);
         var service = new SessionService();
-        Session session = service.Get(order.SessionId);
+        var session = service.Get(order.SessionId);
         if (session.PaymentStatus.ToLower() == "paid")
         {
             await _orderService.UpdateOrderStatusAsync(order.Id, OrderStatus.Approved, PaymentStatus.Approved);

@@ -26,7 +26,7 @@
         <div class="cart-main-area section-padding--lg bg--white">
             <div class="container">
                 <div class="row">
-                    @foreach (var order in Model.OrderByDescending(x=>x.DateOfOrder))
+                    @foreach (var order in Model.OrderByDescending(x => x.DateOfOrder))
                     {
                         <div class="col-md-12 col-sm-12 ol-lg-12 mt-2">
                             <div class="card">
@@ -36,12 +36,7 @@
                                         <p>Placed on @order.DateOfOrder</p>
                                     </div>
                                     <div class="mx-auto"></div>
-                                    <div>
-                                        <span class="badge bg-primary">@order.PaymentStatus</span>
-                                    </div>
-                                    <div>
-                                        <span class="badge bg-primary">@order.OrderStatus</span>
-                                    </div>
+                                    <a href="#" style="color: #ce7852" class="tocart">Manage</a>
                                 </div>
                             </div>
                             <div class="table-content wnro__table table-responsive">
@@ -50,9 +45,9 @@
                                     <tr class="title-top">
                                         <th class="product-thumbnail">Image</th>
                                         <th class="product-name">Product</th>
-                                        <th class="product-price">Price</th>
                                         <th class="product-quantity">Quantity</th>
-                                        <th class="product-subtotal">Total</th>
+                                        <th class="product-price">Status</th>
+                                        <th class="product-subtotal">Date</th>
                                     </tr>
                                     </thead>
                                     <tbody>
@@ -67,13 +62,17 @@
                                             <td class="product-name">
                                                 <a href="/book/@book.Book?.Slug">@book.Book?.Name</a>
                                             </td>
-                                            <td class="product-price">
-                                                <span class="amount">Rs. @book.Price</span>
-                                            </td>
                                             <td class="product-quantity">
                                                 <input type="number" readonly="readonly" value="@book.Quantity">
                                             </td>
-                                            <td class="product-subtotal">Rs. @book.Price</td>
+                                            <td class="product-price">
+                                                <span class="badge" style="background-color: #ce7852">@order.PaymentStatus</span>
+                                                <span class="badge" style="background-color: #ce7852">@order.OrderStatus</span>
+                                            </td>
+
+                                            <td class="product-subtotal">
+                                                Date
+                                            </td>
                                         </tr>
                                     }
                                     </tbody>
