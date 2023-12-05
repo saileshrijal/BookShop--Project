@@ -1,15 +1,18 @@
 ﻿using AspNetCoreHero.ToastNotification.Abstractions;
+using BookShop.Constants;
 using BookShop.Models;
 using BookShop.Repositories.Interface;
 using BookShop.Services.Interface;
 using BookShop.ViewModels.BookVm;
 using BookShop.ViewModels.OrderDetailsVm;
 using BookShop.ViewModels.OrderVm;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BookShop.Controllers;
 
+[Authorize(Roles = UserRoles.Customer)]
 public class OrdersController : Controller
 {
     private readonly IOrderService _orderService;

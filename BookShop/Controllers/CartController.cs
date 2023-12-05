@@ -1,4 +1,5 @@
 ﻿using AspNetCoreHero.ToastNotification.Abstractions;
+using BookShop.Constants;
 using BookShop.Models;
 using BookShop.Repositories.Interface;
 using BookShop.Services.Interface;
@@ -10,7 +11,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace BookShop.Controllers;
 
-[Authorize]
+[Authorize(Roles = UserRoles.Customer)]
 public class CartController : Controller
 {
     private readonly ICartService _cartService;

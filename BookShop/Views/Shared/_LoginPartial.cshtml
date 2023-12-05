@@ -1,0 +1,77 @@
+﻿@using BookShop.Repositories.Interface
+@using Microsoft.AspNetCore.Identity
+@inject ICartRepository CartRepository
+@inject UserManager<ApplicationUser> UserManager
+@inject SignInManager<ApplicationUser> SignInManager
+@{
+    var cartCount = 0;
+    var loggedInUser = new ApplicationUser();
+    if (SignInManager.IsSignedIn(User))
+    {
+        loggedInUser = await UserManager.GetUserAsync(User);
+        cartCount = await CartRepository.CountBy(x => x.ApplicationUserId == loggedInUser.Id);
+    }
+}
+
+<div class="col-md-6 col-sm-6 col-6 col-lg-2">
+    @if (SignInManager.IsSignedIn(User))
+    {
+        <ul class="header__sidebar__right d-flex justify-content-end align-items-center">
+            <li class="shop_search">
+                <a class="search__active" href="#"></a>
+            </li>
+            <li class="wishlist">
+                <a href="#"></a>
+            </li>
+            <li class="shopcart">
+                <a href="/cart">
+                    @if (cartCount > 0)
+                    {
+                        <span class="product_qun">@cartCount</span>
+                    }
+                </a>
+            </li>
+            <li class="setting__bar__icon">
+                <a class="setting__active" href="#"></a>
+                <div class="searchbar__content setting__block">
+                    <div class="content-inner">
+                        <div class="switcher-currency">
+                            <strong class="label switcher-label">
+                                <span>Hello! @loggedInUser?.FirstName @loggedInUser?.LastName</span>
+                            </strong>
+                            <div class="switcher-options">
+                                <div class="switcher-currency-trigger">
+                                    <div class="setting__menu">
+                                        <span>
+                                            <a href="#">My Account</a>
+                                        </span>
+                                        <span>
+                                            <a asp-controller="Wishlist" asp-action="Index">My Wishlist</a>
+                                        </span>
+                                        <span>
+                                            <a asp-controller="Orders" asp-action="Index">My Orders</a>
+                                        </span>
+                                        <span>
+                                            <form asp-controller="Account" asp-action="Logout" id="logoutForm">
+                                            </form>
+                                            <a id="logoutBtn">Logout</a>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </li>
+        </ul>
+    }
+    else
+    {
+        <nav class="mainmenu__nav">
+            <ul class="meninmenu d-flex justify-content-start">
+                <li><a asp-controller="Account" asp-action="Login">Login</a></li>
+                <li><a asp-controller="Account" asp-action="Register">Register</a></li>
+            </ul>
+        </nav>
+    }
+</div>

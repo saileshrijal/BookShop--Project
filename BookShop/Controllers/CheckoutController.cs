@@ -1,4 +1,5 @@
 ﻿using AspNetCoreHero.ToastNotification.Abstractions;
+using BookShop.Constants;
 using BookShop.Dtos.OrderDetailsDto;
 using BookShop.Dtos.OrderDto;
 using BookShop.Dtos.UserAddressDto;
@@ -16,7 +17,7 @@ using Stripe.Checkout;
 
 namespace BookShop.Controllers;
 
-[Authorize]
+[Authorize(Roles = UserRoles.Customer)]
 public class CheckoutController : Controller
 {
     private readonly ICartService _cartService;

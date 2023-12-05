@@ -1,4 +1,5 @@
-﻿using BookShop.Dtos.WishlistDto;
+﻿using BookShop.Constants;
+using BookShop.Dtos.WishlistDto;
 using BookShop.Models;
 using BookShop.Repositories.Interface;
 using BookShop.Services.Interface;
@@ -12,7 +13,7 @@ using BookImageVm = BookShop.ViewModels.BookVm.BookImageVm;
 
 namespace BookShop.Controllers;
 
-[Authorize]
+[Authorize(Roles = UserRoles.Customer)]
 public class WishlistController : Controller
 {
     private readonly IWishlistRepository _wishlistRepository;

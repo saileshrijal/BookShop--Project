@@ -32,8 +32,8 @@ builder.Services.ConfigureApplicationCookie(options =>
         OnRedirectToLogin = context =>
         {
             context.Response.Redirect(context.Request.Path.StartsWithSegments("/dashboard")
-                ? "/Dashboard/Account/Login"
-                : "/Account/Login");
+                ? "/Dashboard/Account/Login?ReturnUrl=" + context.Request.Path + context.Request.QueryString
+                : "/Account/Login?ReturnUrl=" + context.Request.Path + context.Request.QueryString);
             return Task.CompletedTask;
         }
     };
