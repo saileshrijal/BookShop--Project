@@ -11,4 +11,5 @@ public class ApplicationUser : IdentityUser
     public DateTime RegistrationDate { get; set; } = DateTime.UtcNow;
     public DateTime CreatedDate { get; set; } = DateTime.UtcNow;
     public string FullName => $"{FirstName} {LastName}";
+    public List<UserAddress>? Addresses { get; set; }
 }

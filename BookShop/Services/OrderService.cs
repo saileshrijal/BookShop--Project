@@ -45,6 +45,14 @@ public class OrderService : IOrderService
             OrderId = order.Id,
             Price = x.Price,
             Quantity = x.Quantity,
+            Total = x.Total,
+            OrderStatus = OrderStatus.Pending,
+            PaymentStatus = PaymentStatus.Pending,
+            SessionId = addOrderDto.SessionId,
+            PaymentIntentId = addOrderDto.PaymentIntentId,
+            DateOfPayment = addOrderDto.DateOfPayment,
+            TrackingNumber = addOrderDto.TrackingNumber,
+            
         }).ToList();
         await _unitOfWork.SaveAsync();
     }
@@ -71,6 +79,13 @@ public class OrderService : IOrderService
             OrderId = order.Id,
             Price = x.Price,
             Quantity = x.Quantity,
+            Total = x.Total,
+            OrderStatus = OrderStatus.Pending,
+            PaymentStatus = PaymentStatus.Pending,
+            SessionId = addOrderDto.SessionId,
+            PaymentIntentId = addOrderDto.PaymentIntentId,
+            DateOfPayment = addOrderDto.DateOfPayment,
+            TrackingNumber = addOrderDto.TrackingNumber,
         }).ToList();
         await _unitOfWork.AddAsync(order);
         await _unitOfWork.SaveAsync();

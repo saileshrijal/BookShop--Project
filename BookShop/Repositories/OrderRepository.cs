@@ -21,4 +21,26 @@ public class OrderRepository : Repository<Order>, IOrderRepository
             .Where(predicate)
             .ToListAsync();
     }
+
+    public async Task<List<Order>> GetAllWithOrderDetailsAsync()
+    {
+        return await _context.Orders
+            .Include(o => o.OrderDetails)
+            .ThenInclude(od => od.Book)
+            .ThenInclude(x=>x.BookImages)
+            .Include(x=>x.ApplicationUser)
+            .ThenInclude(x=>x.Addresses)
+            .ToListAsync();
+    }
+
+    public async Task<Order> GetWithOrderDetailsAsync(Expression<Func<Order, bool>> predicate)
+    {
+        return await _context.Orders
+            .Include(o => o.OrderDetails)
+            .ThenInclude(od => od.Book)
+            .ThenInclude(x=>x.BookImages)
+            .Include(x=>x.ApplicationUser)
+            .ThenInclude(x=>x.Addresses)
+            .FirstOrDefaultAsync(predicate);
+    }
 }

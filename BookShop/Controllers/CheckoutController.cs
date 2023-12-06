@@ -175,7 +175,8 @@ public class CheckoutController : Controller
             {
                 BookId = x.BookId,
                 Price = x.Book.Price,
-                Quantity = x.Count
+                Quantity = x.Count,
+                Total = x.Book.Price * x.Count
             }).ToList()
         };
         var orderId = await _orderService.AddAndReturnIdAsync(orderDto);

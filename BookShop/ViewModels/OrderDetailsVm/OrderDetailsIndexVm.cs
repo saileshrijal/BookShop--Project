@@ -11,6 +11,7 @@ public class OrderDetailsIndexVm
     public BookDetailsVm? Book { get; set; }
     public decimal Price { get; set; }
     public int Quantity { get; set; }
+    public decimal Total { get; set; }
     public OrderStatus OrderStatus { get; set; }
     public PaymentStatus PaymentStatus { get; set; }
     public DateTime DateOfPayment { get; set; }

@@ -73,4 +73,10 @@ public class OrdersController : Controller
         }).ToList();
         return View(vm);
     }
+
+    // [HttpPost]
+    // public async Task<IActionResult> CancelOrder(int orderDetailsId)
+    // {
+    //     // var orderDetails = await _orderRepository.(orderDetailsId);
+    // }
 }

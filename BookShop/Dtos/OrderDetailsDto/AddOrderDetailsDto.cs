@@ -8,6 +8,7 @@ public class AddOrderDetailsDto
     public int OrderId { get; set; }
     public int BookId { get; set; }
     public decimal Price { get; set; }
+    public decimal Total { get; set; }
     public OrderStatus OrderStatus { get; set; }
     public PaymentStatus PaymentStatus { get; set; }
     public string? TrackingNumber { get; set; }
