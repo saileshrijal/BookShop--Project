@@ -15,10 +15,12 @@ public class OrderService : IOrderService
 
     public OrderService(IUnitOfWork unitOfWork, 
         IOrderRepository orderRepository,
+        IOrderDetailsRepository orderDetailsRepository,
         IBookRepository bookRepository)
     {
         _unitOfWork = unitOfWork;
         _orderRepository = orderRepository;
+        _orderDetailsRepository = orderDetailsRepository;
         _bookRepository = bookRepository;
     }
     
@@ -111,7 +113,7 @@ public class OrderService : IOrderService
         await _unitOfWork.SaveAsync();
     }
 
-    public async Task UpdateOrderStatusAsync(int orderId, OrderStatus orderStatus, PaymentStatus paymentStatus)
+    public async Task UpdateOrderAndPaymentStatusAsync(int orderId, OrderStatus orderStatus, PaymentStatus paymentStatus)
     {
         var order = await _orderRepository.GetByIdAsync(orderId);
         order.OrderStatus = orderStatus;
@@ -121,6 +123,13 @@ public class OrderService : IOrderService
             orderDetails.OrderStatus = orderStatus;
             orderDetails.PaymentStatus = paymentStatus;
         }
+        await _unitOfWork.SaveAsync();
+    }
+
+    public async Task UpdateOrderStatusAsync(int orderDetailId, OrderStatus orderStatus)
+    {
+        var orderDetail = await _orderDetailsRepository.GetByIdAsync(orderDetailId);
+        orderDetail.OrderStatus = orderStatus;
         await _unitOfWork.SaveAsync();
     }
 }

@@ -8,5 +8,6 @@ public interface IOrderService
     Task AddAsync(AddOrderDto addOrderDto);
     Task<int> AddAndReturnIdAsync(AddOrderDto addOrderDto);
     Task PayAsync(int orderId, string sessionId, string paymentIntentId);
-    Task UpdateOrderStatusAsync(int orderId, OrderStatus orderStatus, PaymentStatus paymentStatus);
+    Task UpdateOrderAndPaymentStatusAsync(int orderId, OrderStatus orderStatus, PaymentStatus paymentStatus);
+    Task UpdateOrderStatusAsync(int orderDetailId, OrderStatus orderStatus);
 }

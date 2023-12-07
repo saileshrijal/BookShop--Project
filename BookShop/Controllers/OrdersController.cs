@@ -52,15 +52,15 @@ public class OrdersController : Controller
                 BookId = od.BookId,
                 Book = new BookDetailsVm()
                 {
-                    Id = od.Book.Id,
-                    Name = od.Book.Name,
-                    Description = od.Book.Description,
-                    Price = od.Book.Price,
-                    FeaturedImage = od.Book.FeaturedImagePath,
-                    BookImages = od.Book.BookImages.Select(bi => new BookImageVm()
+                    Id = od.Book?.Id ?? 0,
+                    Name = od.Book?.Name,
+                    Description = od.Book?.Description,
+                    Price = od.Book?.Price ?? 0,
+                    FeaturedImage = od.Book?.FeaturedImagePath,
+                    BookImages = od.Book?.BookImages?.Select(bi => new BookImageVm()
                     {
                         FileName = bi.Path
-                    }).ToList(),
+                    }).ToList()
                 },
                 Price = od.Price,
                 Quantity = od.Quantity,
@@ -73,10 +73,4 @@ public class OrdersController : Controller
         }).ToList();
         return View(vm);
     }
-
-    // [HttpPost]
-    // public async Task<IActionResult> CancelOrder(int orderDetailsId)
-    // {
-    //     // var orderDetails = await _orderRepository.(orderDetailsId);
-    // }
 }

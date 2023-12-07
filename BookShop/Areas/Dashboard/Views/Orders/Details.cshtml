@@ -1,4 +1,5 @@
-﻿@model OrderIndexVm
+﻿@using BookShop.Enum
+@model OrderIndexVm
 
 <div class="page-wrapper">
     <!-- Page header -->
@@ -74,7 +75,37 @@
                                             <td>@orderDetails.Total</td>
                                             <td>@orderDetails.PaymentStatus</td>
                                             <td>@orderDetails.OrderStatus</td>
-                                            <td></td>
+                                            <td>
+                                                <div class="d-flex gap-1">
+                                                    @if (orderDetails.OrderStatus == OrderStatus.Processing)
+                                                    {
+                                                        <form asp-action="ChangeOrderStatus" asp-route-id="@orderDetails.Id" asp-route-orderStatus="@OrderStatus.Approved">
+                                                            <button type="submit" class="btn">
+                                                                <i class="fa fa-eye"></i> &nbsp;
+                                                                Approve
+                                                            </button>
+                                                        </form>
+                                                    }
+                                                    @if (orderDetails.OrderStatus == OrderStatus.Approved)
+                                                    {
+                                                        <form asp-action="ChangeOrderStatus" asp-route-id="@orderDetails.Id" asp-route-orderStatus="@OrderStatus.Shipped">
+                                                            <button type="submit" class="btn">
+                                                                <i class="fa fa-eye"></i> &nbsp;
+                                                                Shipped
+                                                            </button>
+                                                        </form>
+                                                    }
+                                                    @if (orderDetails.OrderStatus == OrderStatus.Shipped)
+                                                    {
+                                                        <form asp-action="ChangeOrderStatus" asp-route-id="@orderDetails.Id" asp-route-orderStatus="@OrderStatus.Delivered">
+                                                            <button type="submit" class="btn">
+                                                                <i class="fa fa-eye"></i> &nbsp;
+                                                                Delivered
+                                                            </button>
+                                                        </form>
+                                                    }
+                                                </div>
+                                            </td>
                                         </tr>
                                     }
                                     </tbody>

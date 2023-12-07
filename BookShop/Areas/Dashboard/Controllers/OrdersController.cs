@@ -19,17 +19,20 @@ namespace BookShop.Areas.Dashboard.Controllers;
 public class OrdersController : Controller
 {
     private readonly IOrderRepository _orderRepository;
+    private readonly IOrderDetailsRepository _orderDetailsRepository;
     private readonly IOrderService  _orderService;
     private readonly INotyfService _notyfService;
     private readonly UserManager<ApplicationUser> _userManager;
 
     public OrdersController(
         IOrderRepository orderRepository,
+        IOrderDetailsRepository orderDetailsRepository,
         IOrderService orderService,
         INotyfService notyfService,
         UserManager<ApplicationUser> userManager)
     {
         _orderRepository = orderRepository;
+        _orderDetailsRepository = orderDetailsRepository;
         _orderService = orderService;
         _notyfService = notyfService;
         _userManager = userManager;
@@ -143,6 +146,27 @@ public class OrdersController : Controller
                 }
             };
             return View(vm);
+        }
+        catch (Exception ex)
+        {
+            _notyfService.Error(ex.Message);
+            return RedirectToAction(nameof(Index));
+        }
+    }
+    
+    public async Task<IActionResult> ChangeOrderStatus(int id, OrderStatus orderStatus)
+    {
+        try
+        {
+            var orderDetails = await _orderDetailsRepository.GetByIdAsync(id);
+            if (orderDetails == null)
+            {
+                _notyfService.Error("Order not found");
+                return RedirectToAction(nameof(Index));
+            }
+            await _orderService.UpdateOrderStatusAsync(id, orderStatus);
+            _notyfService.Success("Order status updated successfully");
+            return RedirectToAction(nameof(Details), new {id = orderDetails.OrderId});
         }
         catch (Exception ex)
         {

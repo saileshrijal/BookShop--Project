@@ -28,6 +28,7 @@ public class CheckoutController : Controller
     private readonly IUserAddressService _userAddressService;
     private readonly IOrderService _orderService;
     private readonly IOrderRepository _orderRepository;
+    private readonly IOrderDetailsRepository _orderDetailsRepository;
     private readonly IBookService _bookService;
     
     public CheckoutController(
@@ -39,6 +40,7 @@ public class CheckoutController : Controller
         IUserAddressService userAddressService,
         IOrderService orderService,
         IOrderRepository orderRepository,
+        IOrderDetailsRepository orderDetailsRepository,
         IBookService bookService)
     {
         _cartService = cartService;
@@ -49,6 +51,8 @@ public class CheckoutController : Controller
         _userAddressService = userAddressService;
         _orderService = orderService;
         _orderRepository = orderRepository;
+        _orderRepository = orderRepository;
+        _orderDetailsRepository = orderDetailsRepository;
         _bookService = bookService;
     }
     
@@ -62,15 +66,15 @@ public class CheckoutController : Controller
             BookId = x.BookId,
             Book = new BookDetailsVm
             {
-                Id = x.Book.Id,
-                Name = x.Book.Name,
-                CategoryNames = x.Book.BookCategories?.Select(x => x.Category?.Name).ToList(),
-                FeaturedImage = x.Book.FeaturedImagePath,
-                Price = x.Book.Price,
-                Description = x.Book.Description,
-                ShortDescription = x.Book.ShortDescription,
-                CreatedDate = x.Book.CreatedDate,
-                Slug = x.Book.Slug,
+                Id = x.Book?.Id ?? 0,
+                Name = x.Book?.Name,
+                CategoryNames = x.Book?.BookCategories?.Select(x => x.Category?.Name).ToList(),
+                FeaturedImage = x.Book?.FeaturedImagePath,
+                Price = x.Book?.Price ?? 0,
+                Description = x.Book?.Description,
+                ShortDescription = x.Book?.ShortDescription,
+                CreatedDate = x.Book?.CreatedDate ?? DateTime.Now,
+                Slug = x.Book?.Slug,
                 Status = x.Book.Status,
                 BestSeller = x.Book.BestSeller,
                 BookImages = x.Book.BookImages?.Select(x => new BookImageVm
@@ -231,7 +235,7 @@ public class CheckoutController : Controller
         var session = service.Get(order.SessionId);
         if (session.PaymentStatus.ToLower() == "paid")
         {
-            await _orderService.UpdateOrderStatusAsync(order.Id, OrderStatus.Approved, PaymentStatus.Approved);
+            await _orderService.UpdateOrderAndPaymentStatusAsync(order.Id, OrderStatus.Approved, PaymentStatus.Approved);
         }
         return View(id);
     }
