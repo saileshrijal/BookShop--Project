@@ -183,38 +183,14 @@ namespace BookShop.Migrations
                     b.Property<string>("ApplicationUserId")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("Carrier")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<DateTime>("DateOfOrder")
                         .HasColumnType("datetime2");
 
                     b.Property<DateTime>("DateOfPayment")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime>("DateOfShipping")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime>("DueDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("OrderStatus")
-                        .HasColumnType("int");
-
                     b.Property<decimal>("OrderTotal")
                         .HasColumnType("decimal(18,2)");
-
-                    b.Property<string>("PaymentIntentId")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("PaymentStatus")
-                        .HasColumnType("int");
-
-                    b.Property<string>("SessionId")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("TrackingNumber")
-                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -234,7 +210,16 @@ namespace BookShop.Migrations
                     b.Property<int>("BookId")
                         .HasColumnType("int");
 
-                    b.Property<DateTime>("DateOfDelivered")
+                    b.Property<DateTime>("DateOfOrderApproved")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("DateOfOrderCancelled")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("DateOfOrderDelivered")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("DateOfOrderShipped")
                         .HasColumnType("datetime2");
 
                     b.Property<DateTime>("DateOfPayment")
@@ -274,6 +259,38 @@ namespace BookShop.Migrations
                     b.HasIndex("OrderId");
 
                     b.ToTable("OrderDetails");
+                });
+
+            modelBuilder.Entity("BookShop.Models.Review", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("ApplicationUserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("BookId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Comment")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreatedDateTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("Rating")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ApplicationUserId");
+
+                    b.HasIndex("BookId");
+
+                    b.ToTable("Reviews");
                 });
 
             modelBuilder.Entity("BookShop.Models.Unit", b =>
@@ -670,6 +687,23 @@ namespace BookShop.Migrations
                     b.Navigation("Book");
 
                     b.Navigation("Order");
+                });
+
+            modelBuilder.Entity("BookShop.Models.Review", b =>
+                {
+                    b.HasOne("BookShop.Models.ApplicationUser", "ApplicationUser")
+                        .WithMany()
+                        .HasForeignKey("ApplicationUserId");
+
+                    b.HasOne("BookShop.Models.Book", "Book")
+                        .WithMany()
+                        .HasForeignKey("BookId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("ApplicationUser");
+
+                    b.Navigation("Book");
                 });
 
             modelBuilder.Entity("BookShop.Models.UserAddress", b =>

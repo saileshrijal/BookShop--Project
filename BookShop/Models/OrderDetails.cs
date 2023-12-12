@@ -17,6 +17,9 @@ public class OrderDetails
     public string? TrackingNumber { get; set; }
     public string? SessionId { get; set; }
     public string? PaymentIntentId { get; set; }
+    public DateTime DateOfOrderApproved{ get; set; }
     public DateTime DateOfPayment { get; set; }
-    public DateTime DateOfDelivered { get; set; }
+    public DateTime DateOfOrderCancelled { get; set; }
+    public DateTime DateOfOrderShipped { get; set; }
+    public DateTime DateOfOrderDelivered { get; set; }
 }

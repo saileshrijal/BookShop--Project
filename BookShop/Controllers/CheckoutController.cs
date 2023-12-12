@@ -28,7 +28,6 @@ public class CheckoutController : Controller
     private readonly IUserAddressService _userAddressService;
     private readonly IOrderService _orderService;
     private readonly IOrderRepository _orderRepository;
-    private readonly IOrderDetailsRepository _orderDetailsRepository;
     private readonly IBookService _bookService;
     
     public CheckoutController(
@@ -40,7 +39,6 @@ public class CheckoutController : Controller
         IUserAddressService userAddressService,
         IOrderService orderService,
         IOrderRepository orderRepository,
-        IOrderDetailsRepository orderDetailsRepository,
         IBookService bookService)
     {
         _cartService = cartService;
@@ -52,14 +50,13 @@ public class CheckoutController : Controller
         _orderService = orderService;
         _orderRepository = orderRepository;
         _orderRepository = orderRepository;
-        _orderDetailsRepository = orderDetailsRepository;
         _bookService = bookService;
     }
     
     public async Task<IActionResult> Index()
     {
         var loggedInUser = await _userManager.GetUserAsync(User);
-        var cartItems = await _cartRepository.FindByWithBooks(x=>x.ApplicationUserId == loggedInUser.Id);
+        var cartItems = await _cartRepository.FindByWithBooks(x=>loggedInUser != null && x.ApplicationUserId == loggedInUser.Id);
         var carItems = cartItems?.Select(x=> new CartItemVm()
         {
             Id = x.Id,
@@ -170,24 +167,22 @@ public class CheckoutController : Controller
         
         var orderDto = new AddOrderDto()
         {
-            ApplicationUserId = loggedInUser.Id,
-            DateOfOrder = DateTime.Now,
+            ApplicationUserId = loggedInUser?.Id,
             OrderTotal = cart.TotalAmount,
-            OrderStatus = OrderStatus.Pending,
-            PaymentStatus = PaymentStatus.Pending,
             OrderDetails = cartItems?.Select(x => new AddOrderDetailsDto()
             {
                 BookId = x.BookId,
-                Price = x.Book.Price,
+                Price = x.Book!.Price,
                 Quantity = x.Count,
                 Total = x.Book.Price * x.Count
             }).ToList()
         };
         var orderId = await _orderService.AddAndReturnIdAsync(orderDto);
-        foreach (var book in orderDto.OrderDetails)
-        {
-            await _bookService.SubtractQuantityAsync(book.BookId, book.Quantity);
-        }
+        if (orderDto.OrderDetails != null)
+            foreach (var book in orderDto.OrderDetails)
+            {
+                await _bookService.SubtractQuantityAsync(book.BookId, book.Quantity);
+            }
 
         var domain = "http://localhost:5197";
         var options = new SessionCreateOptions()
@@ -198,30 +193,30 @@ public class CheckoutController : Controller
             CancelUrl = $"{domain}/checkout",
         };
 
-        foreach (var cartItem in carItems)
-        {
-            var lineItems = new SessionLineItemOptions()
+        if (carItems != null)
+            foreach (var lineItems in carItems.Select(cartItem => new SessionLineItemOptions()
+                     {
+                         PriceData = new SessionLineItemPriceDataOptions()
+                         {
+                             UnitAmount = (long)cartItem.Book?.Price! * 100,
+                             Currency = "npr",
+                             ProductData = new SessionLineItemPriceDataProductDataOptions()
+                             {
+                                 Name = cartItem.Book.Name
+                             }
+                         },
+                         Quantity = cartItem.Quantity
+                     }))
             {
-                PriceData = new SessionLineItemPriceDataOptions()
-                {
-                    UnitAmount = (long)cartItem.Book?.Price * 100,
-                    Currency = "npr",
-                    ProductData = new SessionLineItemPriceDataProductDataOptions()
-                    {
-                        Name = cartItem.Book.Name
-                    }
-                },
-                Quantity = cartItem.Quantity
-            };
-            options.LineItems.Add(lineItems);
-        }
-        
+                options.LineItems.Add(lineItems);
+            }
+
         var service = new SessionService();
         var session = await service.CreateAsync(options);
         
         await _orderService.PayAsync(orderId, session.Id, session.PaymentIntentId);
         
-        await _cartService.ClearCartAsync(loggedInUser.Id);
+        await _cartService.ClearCartAsync(loggedInUser?.Id ?? string.Empty);
         _notyfService.Success("Order has been placed successfully");
         Response.Headers.Add("Location", session.Url);
         return new StatusCodeResult(303);
@@ -230,12 +225,11 @@ public class CheckoutController : Controller
     [HttpGet]
     public async Task<IActionResult> Success(int id)
     {
-        var order = await _orderRepository.GetByIdAsync(id);
+        var order = await _orderRepository.GetWithOrderDetailsAsync(x=>x.Id==id);
         var service = new SessionService();
-        var session = service.Get(order.SessionId);
-        if (session.PaymentStatus.ToLower() == "paid")
+        foreach (var orderDetail in from orderDetail in order?.OrderDetails ?? new List<OrderDetails>() let session = service.Get(orderDetail.SessionId) where session.PaymentStatus.ToLower() == "paid" select orderDetail)
         {
-            await _orderService.UpdateOrderAndPaymentStatusAsync(order.Id, OrderStatus.Approved, PaymentStatus.Approved);
+            await _orderService.UpdateOrderAndPaymentStatusAsync(orderDetail.Id, OrderStatus.Approved, PaymentStatus.Approved);
         }
         return View(id);
     }

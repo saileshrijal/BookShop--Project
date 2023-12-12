@@ -21,4 +21,5 @@ public class ApplicationDbContext : IdentityDbContext
     public DbSet<Order>? Orders { get; set; }
     public DbSet<OrderDetails>? OrderDetails { get; set; }
     public DbSet<Wishlist>? Wishlists { get; set; }
+    public DbSet<Review>? Reviews { get; set; }
 }

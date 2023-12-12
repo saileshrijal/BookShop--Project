@@ -47,7 +47,6 @@ public class OrdersController : Controller
             var vm = orders.Select(x=> new OrderIndexVm()
             {
                 Id = x.Id,
-                DateOfOrder = x.DateOfOrder,
                 OrderTotal = x.OrderTotal,
                 OrderDetails = x.OrderDetails.Select(od=> new OrderDetailsIndexVm()
                 {
@@ -64,14 +63,15 @@ public class OrdersController : Controller
                     },
                     Quantity = od.Quantity,
                     Price = od.Price,
+                    DateOfOrderApproved = od.DateOfOrderApproved,
                 }).ToList(),
                 User = new UserIndexVm()
                 {
-                    Id = x.ApplicationUser.Id,
-                    FullName = x.ApplicationUser.FullName,
-                    Email = x.ApplicationUser.Email,
-                    PhoneNumber = x.ApplicationUser.PhoneNumber,
-                    CreatedDate = x.ApplicationUser.CreatedDate,
+                    Id = x.ApplicationUser?.Id,
+                    FullName = x.ApplicationUser?.FullName,
+                    Email = x.ApplicationUser?.Email,
+                    PhoneNumber = x.ApplicationUser?.PhoneNumber,
+                    CreatedDate = x.ApplicationUser?.CreatedDate,
                     Status = x.ApplicationUser.Status
                 },
                 UserAddress = new UserAddressVm()
@@ -104,7 +104,6 @@ public class OrdersController : Controller
             var vm = new OrderIndexVm()
             {
                 Id = order.Id,
-                DateOfOrder = order.DateOfOrder,
                 OrderTotal = order.OrderTotal,
                 OrderDetails = order.OrderDetails.Select(od=> new OrderDetailsIndexVm()
                 {
@@ -123,15 +122,20 @@ public class OrdersController : Controller
                     Price = od.Price,
                     OrderStatus = od.OrderStatus,
                     PaymentStatus = od.PaymentStatus,
+                    DateOfOrderApproved = od.DateOfOrderApproved,
+                    DateOfOrderDelivered = od.DateOfOrderDelivered,
+                    DateOfOrderCancelled = od.DateOfOrderCancelled,
+                    DateOfOrderShipped = od.DateOfOrderShipped,
+                    DateOfPayment = od.DateOfPayment,
                     Total = od.Total
                 }).ToList(),
                 User = new UserIndexVm()
                 {
-                    Id = order.ApplicationUser.Id,
-                    FullName = order.ApplicationUser.FullName,
-                    Email = order.ApplicationUser.Email,
-                    PhoneNumber = order.ApplicationUser.PhoneNumber,
-                    CreatedDate = order.ApplicationUser.CreatedDate,
+                    Id = order.ApplicationUser?.Id,
+                    FullName = order.ApplicationUser?.FullName,
+                    Email = order.ApplicationUser?.Email,
+                    PhoneNumber = order.ApplicationUser?.PhoneNumber,
+                    CreatedDate = order.ApplicationUser?.CreatedDate,
                     Status = order.ApplicationUser.Status
                 },
                 UserAddress = new UserAddressVm()
@@ -159,11 +163,6 @@ public class OrdersController : Controller
         try
         {
             var orderDetails = await _orderDetailsRepository.GetByIdAsync(id);
-            if (orderDetails == null)
-            {
-                _notyfService.Error("Order not found");
-                return RedirectToAction(nameof(Index));
-            }
             await _orderService.UpdateOrderStatusAsync(id, orderStatus);
             _notyfService.Success("Order status updated successfully");
             return RedirectToAction(nameof(Details), new {id = orderDetails.OrderId});

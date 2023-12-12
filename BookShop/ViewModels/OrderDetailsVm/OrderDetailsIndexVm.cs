@@ -15,5 +15,8 @@ public class OrderDetailsIndexVm
     public OrderStatus OrderStatus { get; set; }
     public PaymentStatus PaymentStatus { get; set; }
     public DateTime DateOfPayment { get; set; }
-    public DateTime DateOfDelivered { get; set; }
+    public DateTime DateOfOrderDelivered { get; set; }
+    public DateTime DateOfOrderApproved { get; set; }
+    public DateTime DateOfOrderShipped { get; set; }
+    public DateTime DateOfOrderCancelled { get; set; }
 }

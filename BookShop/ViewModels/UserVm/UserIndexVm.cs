@@ -9,5 +9,5 @@ public class UserIndexVm
     public string? ProfilePictureUrl { get; set; }
     public List<string>? Roles { get; set; }
     public bool Status { get; set; }
-    public DateTime CreatedDate { get; set; }
+    public DateTime? CreatedDate { get; set; }
 }

@@ -10,7 +10,7 @@
                     <div class="breadcrumb__inner text-center">
                         <h2 class="breadcrumb-title">Shopping Cart</h2>
                         <nav class="breadcrumb-content">
-                            <a class="breadcrumb_item" href="index.html">Home</a>
+                            <a class="breadcrumb_item" href="/">Home</a>
                             <span class="brd-separator">/</span>
                             <span class="breadcrumb_item active">Shopping Cart</span>
                         </nav>
@@ -71,7 +71,7 @@
                                             </td>
 
                                             <td class="product-subtotal">
-                                                Date
+                                                @book.DateOfOrderDelivered
                                             </td>
                                         </tr>
                                     }
@@ -93,3 +93,36 @@
     }
 </div>
 <!-- //Main wrapper -->
+
+<div class="modal fade" id="myModal" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="dvData"></div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+$(document).ready(function(){
+    $(document).on("click",".clsDetails",OpenModalPopUp);   
+});
+
+function OpenModalPopUp(){
+   let itemName = $(this).data("item");
+   alert(itemName);
+   $('#dvData').html(itemName);
+   $("#myModal").modal();
+}
+
+</script>
