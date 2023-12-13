@@ -3,6 +3,7 @@ using BookShop.Models;
 using BookShop.Repositories.Interface;
 using BookShop.Services.Interface;
 using BookShop.ViewModels;
+using BookShop.ViewModels.BlogVm;
 using BookShop.ViewModels.BookVm;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -12,10 +13,13 @@ namespace BookShop.Controllers;
 public class HomeController : Controller
 {
     private readonly IBookRepository _bookRepository;
+    private readonly IBlogRepository _blogRepository;
 
-    public HomeController(IBookRepository bookRepository)
+    public HomeController(IBookRepository bookRepository,
+        IBlogRepository blogRepository)
     {
         _bookRepository = bookRepository;
+        _blogRepository = blogRepository;
     }
 
     [HttpGet]
@@ -46,6 +50,19 @@ public class HomeController : Controller
         };
         vm.RecentBooks = vm.Books.OrderByDescending(x => x.CreatedDate).Take(5).ToList();
         vm.BestSellerBooks = vm.Books.Where(x => x.BestSeller).OrderByDescending(x => x.CreatedDate).Take(5).ToList();
+        var blogs = await _blogRepository.GetAllWithUserAsync();
+        vm.Blogs = blogs.Select(x => new BlogIndexVm
+        {
+            Id = x.Id,
+            Title = x.Title,
+            Description = x.Description,
+            ShortDescription = x.ShortDescription,
+            CreatedDate = x.CreatedDate,
+            Slug = x.Slug,
+            Status = x.Status,
+            ThumbnailUrl = x.ThumbnailUrl,
+            AuthorName = x.ApplicationUser?.FullName,
+        }).ToList();
         return View(vm);
     }
 }

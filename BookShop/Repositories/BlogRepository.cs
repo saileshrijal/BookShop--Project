@@ -26,4 +26,9 @@ public class BlogRepository : Repository<Blog>, IBlogRepository
     {
         return await _context.Blogs.Include(x => x.ApplicationUser).FirstOrDefaultAsync(x => x.Id == id);
     }
+
+    public async Task<Blog> GetWithUserByAsync(Expression<Func<Blog, bool>> expression)
+    {
+        return await _context.Blogs.Include(x => x.ApplicationUser).FirstOrDefaultAsync(expression);
+    }
 }
