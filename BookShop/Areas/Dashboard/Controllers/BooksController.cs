@@ -44,7 +44,6 @@ public class BooksController : Controller
                 CategoryNames = x.BookCategories?.Select(x=>x.Category?.Name).ToList(),
                 Status = x.Status,
                 CreatedDate = x.CreatedDate,
-                FeaturedImage = x.FeaturedImagePath
             }).ToList();
             return View(vm);
         }
@@ -93,10 +92,6 @@ public class BooksController : Controller
                 Price = vm.Price,
                 CategoryIds = vm.CategoryIds
             };
-            if (vm.FeaturedImage != null)
-            {
-                dto.FeaturedImage = await _fileHelper.UploadFileAsync(vm.FeaturedImage, "books");
-            }
             await _bookService.AddAsync(dto);
             _notyfService.Success("Book added successfully");
             return RedirectToAction(nameof(Index));
@@ -124,7 +119,6 @@ public class BooksController : Controller
                 Name = book.Name,
                 Price = book.Price,
                 ShortDescription = book.ShortDescription,
-                FeaturedImagePath = book.FeaturedImagePath,
                 CategoryIds = book.BookCategories?.Select(x => x.CategoryId).ToList(),
                 CategoriesSelectList = categories.Select(x => new SelectListItem()
                 {
@@ -156,14 +150,6 @@ public class BooksController : Controller
                 Price = vm.Price,
                 CategoryIds = vm.CategoryIds
             };
-            if (vm.FeaturedImage != null)
-            {
-                dto.FeaturedImage = await _fileHelper.UploadFileAsync(vm.FeaturedImage, "books");
-                if (!string.IsNullOrWhiteSpace(vm.FeaturedImagePath))
-                {
-                    await _fileHelper.DeleteFileAsync(vm.FeaturedImagePath, "books");
-                }
-            }
             await _bookService.EditAsync(dto);
             _notyfService.Success("Book edited successfully");
             return RedirectToAction(nameof(Index));
@@ -181,10 +167,6 @@ public class BooksController : Controller
         try
         {
             var book = await _bookRepository.GetByIdAsync(id);
-            if(!string.IsNullOrWhiteSpace(book.FeaturedImagePath))
-            {
-                await _fileHelper.DeleteFileAsync(book.FeaturedImagePath, "books");
-            }
             await _bookService.DeleteAsync(id);
             _notyfService.Success("Book deleted successfully");
             return RedirectToAction(nameof(Index));

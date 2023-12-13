@@ -33,6 +33,7 @@ public static class DiConfig
         services.AddScoped<IOrderRepository, OrderRepository>();
         services.AddScoped<IOrderDetailsRepository, OrderDetailsRepository>();
         services.AddScoped<IWishlistRepository, WishlistRepository>();
+        services.AddScoped<IBlogRepository, BlogRepository>();
     }
 
     private static void UseServices(IServiceCollection services)
@@ -46,6 +47,7 @@ public static class DiConfig
         services.AddScoped<IOrderService, OrderService>();
         services.AddScoped<IOrderDetailsService, OrderDetailsService>();
         services.AddScoped<IWishlistService, WishlistService>();
+        services.AddScoped<IBlogService, BlogService>();
     }
 
     private static void UseMisc(IServiceCollection services)

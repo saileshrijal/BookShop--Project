@@ -48,7 +48,7 @@
                     </div>
                     <div class="card-body">
                         <div class="row">
-                            <div class="col-md-9 col-sm-12">
+                            <div class="col-md-12">
                                 <div class="mb-3">
                                     <label class="form-label required" asp-for="Name">Name</label>
                                     <div>
@@ -87,13 +87,6 @@
                                         <span class="form-hint" asp-validation-for="Description"></span>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="col-md-3 col-sm-12">
-                                <div class="mb-3">
-                                    <img class="w-100 object-fit-cover" style="height: 300px; object-position: center" id="imagePreview" src="@(string.IsNullOrWhiteSpace(Model?.FeaturedImagePath) ? "https://i.stack.imgur.com/34AD2.jpg" : "/uploads/books/" + Model?.FeaturedImagePath)" alt="image">
-                                </div>
-                                <input type="file" id="imageInput" class="form-control" accept="png,jpg,jpeg" asp-for="FeaturedImage">
-                                <span class="text-danger" asp-validation-for="FeaturedImage"></span>
                             </div>
                         </div>
                     </div>

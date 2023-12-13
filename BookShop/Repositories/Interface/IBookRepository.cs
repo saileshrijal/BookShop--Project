@@ -9,4 +9,5 @@ public interface IBookRepository : IRepository<Book>
     Task<List<Book>> GetAllWithCategoryAndImagesAsync();
     Task<Book> GetWithCategoryAndImagesAsync(int id);
     Task<Book> GetWithCategoryAndImagesAsync(string slug);
+    Task<List<Book>> GetAllByCategorySlugWithCategoryAndImagesAsync(string slug);
 }

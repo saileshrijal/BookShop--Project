@@ -1,6 +1,6 @@
-﻿@model AddBookImageVm
+﻿@model BookShop.ViewModels.BlogVm.EditBlogVm
 @{
-    ViewData["title"] = "Add Book Image";
+    ViewData["title"] = "Edit Blog";
 }
 <div class="page-wrapper">
     <!-- Page header -->
@@ -20,10 +20,10 @@
                 <div class="col-auto ms-auto d-print-none">
                     <div class="btn-list">
                         <span class="d-none d-sm-inline">
-                            <a asp-action="Index" asp-controller="BookImages" asp-route-bookId="@Model.BookId" class="btn">
+                            <a asp-action="Index" class="btn">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-arrow-left"
-                                     width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
-                                     fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                    width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
+                                    fill="none" stroke-linecap="round" stroke-linejoin="round">
                                     <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
                                     <path d="M5 12l14 0"></path>
                                     <path d="M5 12l6 6"></path>
@@ -40,44 +40,44 @@
 
     <div class="page-body">
         <div class="container-xl">
-            @await Html.PartialAsync("_BookInfo", Model?.Book)
             <div class="col-md-12">
-                <form class="card" asp-action="Add" enctype="multipart/form-data">
-                    <input type="hidden" asp-for="BookId">
+                <form class="card" asp-action="Edit" enctype="multipart/form-data">
+                    <input type="hidden" asp-for="Id" >
                     <div class="card-header">
-                        <h3 class="card-title">Add Image</h3>
+                        <h3 class="card-title">Edit Blog</h3>
                     </div>
                     <div class="card-body">
                         <div class="row">
-                            <div class="col-md-9 col-sm-12">
+                            <div class="col-md-9">
                                 <div class="mb-3">
-                                    <label class="form-label required" asp-for="Name">Name</label>
+                                    <label class="form-label required" asp-for="Title">Title</label>
                                     <div>
-                                        <input type="text" class="form-control" placeholder="Enter Name" asp-for="Name">
-                                        <span class="text-danger" asp-validation-for="Name"></span>
+                                        <input type="text" class="form-control" placeholder="Enter Title" asp-for="Title">
+                                        <span class="text-danger" asp-validation-for="Title"></span>
                                     </div>
                                 </div>
                                 <div class="mb-3">
-                                    <label class="form-label required" asp-for="Alt">Alt</label>
+                                    <label class="form-label required" asp-for="ShortDescription">Short Description</label>
                                     <div>
-                                        <input type="text" class="form-control" placeholder="Alt" asp-for="Alt">
-                                        <span class="text-danger" asp-validation-for="Alt"></span>
+                                        <input type="text" class="form-control" placeholder="Enter Short Description" asp-for="ShortDescription">
+                                        <span class="text-danger" asp-validation-for="ShortDescription"></span>
                                     </div>
                                 </div>
                                 <div class="mb-3">
-                                    <label class="form-label required" asp-for="Name">Display Order</label>
+                                    <label class="form-label" asp-for="Description">Description</label>
                                     <div>
-                                        <input type="number" class="form-control" placeholder="Price" asp-for="DisplayOrder">
-                                        <span class="text-danger" asp-validation-for="DisplayOrder"></span>
+                                        <textarea rows="8" class="form-control tinyEditor" placeholder="Description"
+                                                                    asp-for="Description"></textarea>
+                                        <span class="form-hint" asp-validation-for="Description"></span>
                                     </div>
                                 </div>
                             </div>
                             <div class="col-md-3 col-sm-12">
                                 <div class="mb-3">
-                                    <img class="w-100 object-fit-cover" id="imagePreview" style="height: 300px; object-position: center" src="https://i.stack.imgur.com/34AD2.jpg" alt="image">
+                                    <img class="w-100 object-fit-cover" id="imagePreview" style="height: 300px; object-position: center" src="@(string.IsNullOrWhiteSpace(Model.ThumbnailUrl)?"https://i.stack.imgur.com/34AD2.jpg":"/uploads/thumbnails/"+@Model.ThumbnailUrl)" alt="image">
                                 </div>
-                                <input type="file" class="form-control" id="imageInput" accept="png,jpg,jpeg" asp-for="Image">
-                                <span class="text-danger" asp-validation-for="Image"></span>
+                                <input type="file" class="form-control" id="imageInput" accept="png,jpg,jpeg" asp-for="Thumbnail">
+                                <span class="text-danger" asp-validation-for="Thumbnail"></span>
                             </div>
                         </div>
                     </div>

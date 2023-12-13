@@ -45,7 +45,6 @@ public class CartController : Controller
                 Id = x.Book.Id,
                 Name = x.Book.Name,
                 CategoryNames = x.Book.BookCategories?.Select(x => x.Category?.Name).ToList(),
-                FeaturedImage = x.Book.FeaturedImagePath,
                 Price = x.Book.Price,
                 Description = x.Book.Description,
                 ShortDescription = x.Book.ShortDescription,

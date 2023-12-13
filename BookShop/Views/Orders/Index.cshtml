@@ -1,4 +1,5 @@
-﻿@model List<BookShop.ViewModels.OrderVm.UserOrderIndexVm>
+﻿@using BookShop.Enum
+@model List<BookShop.ViewModels.OrderVm.UserOrderIndexVm>
 <!-- Main wrapper -->
 <div class="wrapper" id="wrapper">
 
@@ -35,8 +36,6 @@
                                         <h5 class="card-title">Order ID: @order.Id</h5>
                                         <p>Placed on @order.DateOfOrder</p>
                                     </div>
-                                    <div class="mx-auto"></div>
-                                    <a href="#" style="color: #ce7852" class="tocart">Manage</a>
                                 </div>
                             </div>
                             <div class="table-content wnro__table table-responsive">
@@ -66,12 +65,28 @@
                                                 <input type="number" readonly="readonly" value="@book.Quantity">
                                             </td>
                                             <td class="product-price">
-                                                <span class="badge" style="background-color: #ce7852">@book.PaymentStatus</span>
                                                 <span class="badge" style="background-color: #ce7852">@book.OrderStatus</span>
                                             </td>
-
-                                            <td class="product-subtotal">
-                                                @book.DateOfOrderDelivered
+                                            <td class="product-quantity">
+                                                @switch (book.OrderStatus)
+                                                {
+                                                    case OrderStatus.Delivered:
+                                                        <p>Delivered on </p>
+                                                        <strong>@book.DateOfOrderDelivered</strong>
+                                                        break;
+                                                    case OrderStatus.Cancelled:
+                                                        <p>Cancelled on </p>
+                                                        <strong>@book.DateOfOrderCancelled</strong>
+                                                        break;
+                                                    case OrderStatus.Shipped:
+                                                        <p>Shipped on </p>
+                                                        <strong>@book.DateOfOrderShipped</strong>
+                                                        break;
+                                                    default:
+                                                        <p>Approved on </p>
+                                                        <strong>@book.DateOfOrderApproved</strong>
+                                                        break;
+                                                }
                                             </td>
                                         </tr>
                                     }
@@ -91,26 +106,6 @@
             <p class="text-center">Your order is empty!!</p>
         </div>
     }
-</div>
-<!-- //Main wrapper -->
-
-<div class="modal fade" id="myModal" role="dialog">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <div class="dvData"></div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-            </div>
-        </div>
-    </div>
 </div>
 
 <script>

@@ -1,8 +1,7 @@
 ﻿@using BookShop.Repositories.Interface
 @inject ICategoryRepository CategoryRepository
 @{
-    var isAccountPage = Context.Request.Path.StartsWithSegments("/Account");
-    var isBookDetailsPage = Context.Request.Path.StartsWithSegments("/Book");
+    var isHomePage = Context.Request.Path.StartsWithSegments("/");
     var categories = await CategoryRepository.GetAllAsync();
 }
 <!doctype html>
@@ -41,7 +40,7 @@
 <!-- Main wrapper -->
 <div class="wrapper" id="wrapper">
     <!-- Header -->
-    <header id="wn__header" class='@(isAccountPage||isBookDetailsPage?"oth-page":"") header__area header__absolute sticky__header'>
+    <header id="wn__header" class='@(!isHomePage ? "oth-page" : "") header__area header__absolute sticky__header'>
         <div class="container-fluid">
             <div class="row">
                 <div class="col-md-6 col-sm-6 col-6 col-lg-2">
@@ -54,18 +53,28 @@
                 <div class="col-lg-8 d-none d-lg-block">
                     <nav class="mainmenu__nav">
                         <ul class="meninmenu d-flex justify-content-start">
-                            <li><a href="/">Home</a></li>
-                            <li class="drop"><a href="blog.html">Category</a>
+                            <li>
+                                <a href="/">Home</a>
+                            </li>
+                            <li>
+                                <a href="/books">Books</a>
+                            </li>
+                            <li class="drop">
+                                <a href="#">Category</a>
                                 <div class="megamenu dropdown">
                                     <ul class="item item01">
                                         @foreach (var category in categories)
                                         {
-                                            <li><a href="#">@category?.Name</a></li>
+                                            <li>
+                                                <a href="/category/@category?.Slug">@category?.Name</a>
+                                            </li>
                                         }
                                     </ul>
                                 </div>
                             </li>
-                            <li><a href="contact.html">Contact</a></li>
+                            <li>
+                                <a href="contact.html">Contact</a>
+                            </li>
                         </ul>
                     </nav>
                 </div>
@@ -76,19 +85,26 @@
                 <div class="col-lg-12 d-none">
                     <nav class="mobilemenu__nav">
                         <ul class="meninmenu">
-                            <li><a href="/">Home</a>
+                            <li>
+                                <a href="/">Home</a>
                             </li>
-                            <li><a href="#">Category</a>
+                            <li>
+                                <a href="/books">Books</a>
+                            </li>
+                            <li>
+                                <a href="#">Category</a>
                                 <ul>
-                                         @foreach (var category in categories)
-                                         {
-                                             <li>
-                                                 <a href="#">@category?.Name</a>
-                                             </li>
-                                         }
+                                    @foreach (var category in categories)
+                                    {
+                                        <li>
+                                            <a href="/category/@category?.Slug">@category?.Name</a>
+                                        </li>
+                                    }
                                 </ul>
                             </li>
-                            <li><a href="contact.html">Contact</a></li>
+                            <li>
+                                <a href="contact.html">Contact</a>
+                            </li>
                         </ul>
                     </nav>
                 </div>
@@ -106,7 +122,9 @@
             <div class="field__search">
                 <input type="text" placeholder="Search entire store here...">
                 <div class="action">
-                    <a href="#"><i class="zmdi zmdi-search"></i></a>
+                    <a href="#">
+                        <i class="zmdi zmdi-search"></i>
+                    </a>
                 </div>
             </div>
         </form>
@@ -127,22 +145,52 @@
                                 <a href="index.html">
                                     <img src="/public_panel/images/logo/3.png" alt="logo">
                                 </a>
-                                <p>There are many variations of passages of Lorem Ipsum available, but the majority
-                                    have suffered duskam alteration variations of passages</p>
+                                <p>
+                                    There are many variations of passages of Lorem Ipsum available, but the majority
+                                    have suffered duskam alteration variations of passages
+                                </p>
                             </div>
                             <div class="footer__content">
                                 <ul class="social__net social__net--2 d-flex justify-content-center">
-                                    <li><a href="#"><i class="bi bi-facebook"></i></a></li>
-                                    <li><a href="#"><i class="bi bi-google"></i></a></li>
-                                    <li><a href="#"><i class="bi bi-twitter"></i></a></li>
-                                    <li><a href="#"><i class="bi bi-linkedin"></i></a></li>
-                                    <li><a href="#"><i class="bi bi-youtube"></i></a></li>
+                                    <li>
+                                        <a href="#">
+                                            <i class="bi bi-facebook"></i>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#">
+                                            <i class="bi bi-google"></i>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#">
+                                            <i class="bi bi-twitter"></i>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#">
+                                            <i class="bi bi-linkedin"></i>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#">
+                                            <i class="bi bi-youtube"></i>
+                                        </a>
+                                    </li>
                                 </ul>
                                 <ul class="mainmenu d-flex justify-content-center">
-                                    <li><a href="/">Home</a></li>
-                                    <li><a href="/books">All Books</a></li>
-                                    <li><a asp-controller="Wishlist" asp-action="Index">Wishlist</a></li>
-                                    <li><a href="index.html">Contact</a></li>
+                                    <li>
+                                        <a href="/">Home</a>
+                                    </li>
+                                    <li>
+                                        <a href="/books">All Books</a>
+                                    </li>
+                                    <li>
+                                        <a asp-controller="Wishlist" asp-action="Index">Wishlist</a>
+                                    </li>
+                                    <li>
+                                        <a href="index.html">Contact</a>
+                                    </li>
                                 </ul>
                             </div>
                         </div>
@@ -156,8 +204,13 @@
                     <div class="col-lg-6 col-md-6 col-sm-12">
                         <div class="copyright">
                             <div class="copy__right__inner text-start">
-                                <p>&copy; 2021, BookShop. Made with <i class="fa fa-heart text-danger"></i> by <a
-                                        href="http://saileshrijal.com.np/" target="_blank">Sailesh Rijal</a></p>
+                                <p>
+                                    &copy; 2021, BookShop. Made with <i class="fa fa-heart text-danger"></i> by
+                                    <a
+                                        href="http://saileshrijal.com.np/" target="_blank">
+                                        Sailesh Rijal
+                                    </a>
+                                </p>
                             </div>
                         </div>
                     </div>

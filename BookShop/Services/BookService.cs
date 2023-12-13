@@ -28,7 +28,6 @@ public class BookService : IBookService
             Name = addBookDto.Name,
             Description = addBookDto.Description,
             Price = addBookDto.Price,
-            FeaturedImagePath = addBookDto.FeaturedImage,
             ShortDescription = addBookDto.ShortDescription,
             BookCategories = addBookDto.CategoryIds?.Select(x => new BookCategory
             {
@@ -48,7 +47,6 @@ public class BookService : IBookService
         book.ShortDescription = editBookDto.ShortDescription;
         book.Description = editBookDto.Description;
         book.Price = editBookDto.Price;
-        if (!string.IsNullOrWhiteSpace(editBookDto.FeaturedImage)) book.FeaturedImagePath = editBookDto.FeaturedImage;
         if (editBookDto.CategoryIds != null)
         {
             var updatedCategories = editBookDto.CategoryIds.Select(categoryId => new BookCategory

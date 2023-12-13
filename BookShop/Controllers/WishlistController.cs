@@ -42,7 +42,6 @@ public class WishlistController : Controller
             {
                 Id = x.Book.Id,
                 Name = x.Book.Name,
-                FeaturedImage = x.Book.FeaturedImagePath,
                 Price = x.Book.Price,
                 Quantity = x.Book.Quantity,
                 Slug = x.Book.Slug,

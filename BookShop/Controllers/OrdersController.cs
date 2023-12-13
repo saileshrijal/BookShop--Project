@@ -44,7 +44,6 @@ public class OrdersController : Controller
                     Name = od.Book?.Name,
                     Description = od.Book?.Description,
                     Price = od.Book?.Price ?? 0,
-                    FeaturedImage = od.Book?.FeaturedImagePath,
                     BookImages = od.Book?.BookImages?.Select(bi => new BookImageVm()
                     {
                         FileName = bi.Path

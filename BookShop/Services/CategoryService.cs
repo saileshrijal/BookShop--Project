@@ -1,4 +1,5 @@
 ﻿using BookShop.Dtos.CategoryDto;
+using BookShop.Helpers.Interface;
 using BookShop.Models;
 using BookShop.Repositories.Interface;
 using BookShop.Services.Interface;
@@ -9,11 +10,13 @@ public class CategoryService : ICategoryService
 {
     private readonly IUnitOfWork _unitOfWork;
     private readonly ICategoryRepository _categoryRepository;
+    private readonly IStringHelper _stringHelper;
 
-    public CategoryService(IUnitOfWork unitOfWork, ICategoryRepository categoryRepository)
+    public CategoryService(IUnitOfWork unitOfWork, ICategoryRepository categoryRepository, IStringHelper stringHelper)
     {
         _unitOfWork = unitOfWork;
         _categoryRepository = categoryRepository;
+        _stringHelper = stringHelper;
     }
 
     public async Task AddAsync(AddCategoryDto addCategoryDto)
@@ -22,6 +25,7 @@ public class CategoryService : ICategoryService
         {
             Name = addCategoryDto.Name,
             Description = addCategoryDto.Description,
+            Slug = _stringHelper.GenerateSlug(addCategoryDto.Name)
         };
         await _unitOfWork.AddAsync(category);
         await _unitOfWork.SaveAsync();

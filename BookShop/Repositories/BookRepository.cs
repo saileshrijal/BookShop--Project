@@ -53,4 +53,14 @@ public class BookRepository : Repository<Book>, IBookRepository
             .ThenInclude(x => x.Category)
             .FirstOrDefaultAsync(x => x.Slug == slug);
     }
+
+    public async Task<List<Book>> GetAllByCategorySlugWithCategoryAndImagesAsync(string slug)
+    {
+        return await _context.Books
+            .Include(x=>x.BookImages)
+            .Include(x => x.BookCategories)
+            .ThenInclude(x => x.Category)
+            .Where(x => x.BookCategories.Any(x => x.Category.Slug == slug))
+            .ToListAsync();
+    }
 }

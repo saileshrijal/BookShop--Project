@@ -47,7 +47,7 @@
                     </div>
                     <div class="card-body">
                         <div class="row">
-                            <div class="col-md-9 col-sm-12">
+                            <div class="col-sm-12">
                                 <div class="mb-3">
                                     <label class="form-label required" asp-for="Name">Name</label>
                                     <div>
@@ -81,18 +81,11 @@
                                 <div class="mb-3">
                                     <label class="form-label" asp-for="Description">Description</label>
                                     <div>
-                                        <textarea rows="8" class="form-control" placeholder="Description"
+                                        <textarea rows="8" class="form-control tinyEditor" placeholder="Description"
                                                                     asp-for="Description"></textarea>
                                         <span class="form-hint" asp-validation-for="Description"></span>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="col-md-3 col-sm-12">
-                                <div class="mb-3">
-                                    <img class="w-100 object-fit-cover" style="height: 300px; object-position: center" id="imagePreview" src="https://i.stack.imgur.com/34AD2.jpg" alt="image">
-                                </div>
-                                <input type="file" id="imageInput" class="form-control" accept="png,jpg,jpeg" asp-for="FeaturedImage">
-                                <span class="text-danger" asp-validation-for="FeaturedImage"></span>
                             </div>
                         </div>
                     </div>
