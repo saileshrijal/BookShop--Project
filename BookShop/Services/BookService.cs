@@ -29,6 +29,7 @@ public class BookService : IBookService
             Description = addBookDto.Description,
             Price = addBookDto.Price,
             ShortDescription = addBookDto.ShortDescription,
+            Quantity = addBookDto.Quantity,
             BookCategories = addBookDto.CategoryIds?.Select(x => new BookCategory
             {
                 CategoryId = x
@@ -46,6 +47,7 @@ public class BookService : IBookService
         book.Name = editBookDto.Name;
         book.ShortDescription = editBookDto.ShortDescription;
         book.Description = editBookDto.Description;
+        book.Quantity = editBookDto.Quantity;
         book.Price = editBookDto.Price;
         if (editBookDto.CategoryIds != null)
         {

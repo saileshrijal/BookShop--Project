@@ -12,6 +12,24 @@ public class BlogsController : Controller
     {
         _blogRepository = blogRepository;
     }
+
+    [HttpGet]
+    public async Task<IActionResult> Index()
+    {
+        var blogs = await _blogRepository.GetAllAsync();
+        var vm = blogs.Select(x=> new BlogIndexVm()
+        {
+            Id = x.Id,
+            Title = x.Title,
+            Slug = x.Slug,
+            Description = x.Description,
+            ShortDescription = x.ShortDescription,
+            ThumbnailUrl = x.ThumbnailUrl,
+            CreatedDate = x.CreatedDate,
+            AuthorName = x.ApplicationUser?.FullName
+        }).ToList();
+        return View(vm);
+    }
     
     // GET
     [HttpGet("/blog/{slug}")]

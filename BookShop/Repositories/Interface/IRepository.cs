@@ -9,4 +9,5 @@ public interface IRepository<T> where T : class
     Task<T> GetByAsync(Expression<Func<T, bool>> predicate);
     Task<List<T>> FindByAsync(Expression<Func<T, bool>> predicate);
     Task<int> CountAsync();
+    Task<int> CountByAsync(Expression<Func<T, bool>> predicate);
 }

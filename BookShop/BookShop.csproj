@@ -22,11 +22,45 @@
 
     <ItemGroup>
       <Folder Include="wwwroot\public_panel\" />
-      <Folder Include="wwwroot\uploads\books\" />
     </ItemGroup>
 
     <ItemGroup>
       <_ContentIncludedByDefault Remove="Views\Checkout\Index.cshtml" />
+      <_ContentIncludedByDefault Remove="wwwroot\uploads\books\00bacfd8-03d5-4008-9b04-26b317271fa3.jpg" />
+      <_ContentIncludedByDefault Remove="wwwroot\uploads\books\021d1522-e194-43e5-8919-87a0a18cfc3e.jpg" />
+      <_ContentIncludedByDefault Remove="wwwroot\uploads\books\037e23f9-960d-47cb-9974-825203ab715c.jpg" />
+      <_ContentIncludedByDefault Remove="wwwroot\uploads\books\0c45b3f7-b68a-482e-85ec-5aa715f484e8.webp" />
+      <_ContentIncludedByDefault Remove="wwwroot\uploads\books\0fde3cb5-e7ee-4fe6-923a-c8d05b25a914.jpg" />
+      <_ContentIncludedByDefault Remove="wwwroot\uploads\books\1c4d7059-438c-433a-9915-8eb87c8b82b5.jpg" />
+      <_ContentIncludedByDefault Remove="wwwroot\uploads\books\23bc8106-3529-4f9c-b75b-8c5070a2c7c1.jpg" />
+      <_ContentIncludedByDefault Remove="wwwroot\uploads\books\3902ca06-16fc-4081-9b03-be64b03cff19.jpg" />
+      <_ContentIncludedByDefault Remove="wwwroot\uploads\books\3c522618-0b83-470d-afad-7e1812ab4013.jpg" />
+      <_ContentIncludedByDefault Remove="wwwroot\uploads\books\41529870-42eb-47a2-b64c-a9ef11d5cedf.jpg" />
+      <_ContentIncludedByDefault Remove="wwwroot\uploads\books\4dd3cd18-95e7-4a6c-aa99-91de09a743c1.jpg" />
+      <_ContentIncludedByDefault Remove="wwwroot\uploads\books\5225ba0f-563f-4edb-815f-14320c2b21dc.jpg" />
+      <_ContentIncludedByDefault Remove="wwwroot\uploads\books\67ca6e43-1486-4b5d-b840-6baee0018f3a.jpg" />
+      <_ContentIncludedByDefault Remove="wwwroot\uploads\books\6cb34d6d-4efd-4b0e-9a9d-743e74c6299b.jpg" />
+      <_ContentIncludedByDefault Remove="wwwroot\uploads\books\76a81c73-da3e-4074-baff-f7e7a1553b94.jpg" />
+      <_ContentIncludedByDefault Remove="wwwroot\uploads\books\8cabbb55-3f75-4023-a2b4-1c627514081c.jpg" />
+      <_ContentIncludedByDefault Remove="wwwroot\uploads\books\90dc8975-8096-47d8-8a0f-9176950866f2.jpg" />
+      <_ContentIncludedByDefault Remove="wwwroot\uploads\books\915d268d-43d2-47ad-a9e1-d7957dfc7a39.jpg" />
+      <_ContentIncludedByDefault Remove="wwwroot\uploads\books\990b5843-89bf-40ed-a3b3-8b23d6e38cce.jpg" />
+      <_ContentIncludedByDefault Remove="wwwroot\uploads\books\9a6eb55f-5e58-4126-ada8-3864802fded2.jpg" />
+      <_ContentIncludedByDefault Remove="wwwroot\uploads\books\9d05b7eb-3ec3-4ab7-9f12-99fde1209f51.jpg" />
+      <_ContentIncludedByDefault Remove="wwwroot\uploads\books\9ef57eb5-5422-4e24-a235-c94ee650c4a7.jpg" />
+      <_ContentIncludedByDefault Remove="wwwroot\uploads\books\a621e955-b53a-44b1-b3e2-4fa7d1a1dc1d.jpg" />
+      <_ContentIncludedByDefault Remove="wwwroot\uploads\books\a73e4bb2-20b7-49a2-9c7d-9ed1b3038493.jpg" />
+      <_ContentIncludedByDefault Remove="wwwroot\uploads\books\b598813d-c077-434a-b838-84551c474bb2.jpg" />
+      <_ContentIncludedByDefault Remove="wwwroot\uploads\books\b81535b3-b7c3-4503-8c72-365c4fd55636.jpg" />
+      <_ContentIncludedByDefault Remove="wwwroot\uploads\books\d86ef520-df35-4c85-bcf2-4be66028a841.jpg" />
+      <_ContentIncludedByDefault Remove="wwwroot\uploads\books\e40f18a6-2993-4d43-9c95-76d01f4399f0.jpg" />
+      <_ContentIncludedByDefault Remove="wwwroot\uploads\books\e7aa8f77-8bc8-48e1-8ff1-8d2afbc1d04b.jpg" />
+      <_ContentIncludedByDefault Remove="wwwroot\uploads\books\f1f34bc4-d086-47ef-b33d-8c40842d34e9.jpg" />
+      <_ContentIncludedByDefault Remove="wwwroot\uploads\books\f8f11e63-4c84-4ccb-842b-4733b1798f7e.jpg" />
+      <_ContentIncludedByDefault Remove="wwwroot\uploads\books\fc860d2e-72b9-439f-a902-e80de5e1fe2f.jpg" />
+      <_ContentIncludedByDefault Remove="wwwroot\uploads\thumbnails\112b9278-d8a7-4215-bf25-9dabcd50cf76.jpg" />
+      <_ContentIncludedByDefault Remove="wwwroot\uploads\thumbnails\5994bc67-5194-430b-bef1-75af6da335a0.jpg" />
+      <_ContentIncludedByDefault Remove="wwwroot\uploads\thumbnails\c6b8153a-0eb5-4b52-b7bb-e2ff57084827.jpg" />
     </ItemGroup>
     
 </Project>

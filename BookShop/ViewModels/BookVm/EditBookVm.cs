@@ -16,5 +16,7 @@ public class EditBookVm
     public decimal Price { get; set; }
     [Required(ErrorMessage = "Please select a category")]
     public List<int>? CategoryIds { get; set; }
+    [Required(ErrorMessage = "Please enter quantity")]
+    public int Quantity { get; set; }
     public List<SelectListItem>? CategoriesSelectList { get; set; } = new();
 }

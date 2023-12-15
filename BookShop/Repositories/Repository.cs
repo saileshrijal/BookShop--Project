@@ -21,6 +21,11 @@ public class Repository<T> : IRepository<T> where T : class
         return await _dbSet.CountAsync();
     }
 
+    public async Task<int> CountByAsync(Expression<Func<T, bool>> predicate)
+    {
+        return await _dbSet.CountAsync(predicate);
+    }
+
     public async Task<List<T>> FindByAsync(Expression<Func<T, bool>> predicate)
     {
         return await _dbSet.Where(predicate).ToListAsync();

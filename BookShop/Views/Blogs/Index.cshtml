@@ -1,0 +1,68 @@
+﻿@model List<BookShop.ViewModels.BlogVm.BlogIndexVm>
+
+<!-- Main wrapper -->
+<div class="wrapper" id="wrapper">
+    <!-- Start breadcrumb area -->
+    <div class="ht__breadcrumb__area bg-image--6">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="breadcrumb__inner text-center">
+                        <h2 class="breadcrumb-title">Blogs</h2>
+                        <nav class="breadcrumb-content">
+                            <a class="breadcrumb_item" href="/">Home</a>
+                            <span class="brd-separator">/</span>
+                            <span class="breadcrumb_item active">Blog</span>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- End breadcrumb area -->
+    <!-- Start Blog Area -->
+    <div class="page-blog bg--white section-padding--lg blog-sidebar right-sidebar">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="blog-page">
+                        <div class="page__header">
+                            <h2>Blogs</h2>
+                        </div>
+                        @foreach (var blog in Model)
+                        {
+                            <!-- Start Single Post -->
+                            <article class="blog__post d-flex flex-wrap">
+                                @if (!string.IsNullOrWhiteSpace(blog.ThumbnailUrl))
+                                {
+                                    <div class="thumb">
+                                        <a href="/blog/@blog.Slug">
+                                            <img src="/uploads/thumbnails/@blog.ThumbnailUrl" alt="blog images" style="height: 400px; object-fit: cover">
+                                        </a>
+                                    </div>
+                                }
+                                <div class="content">
+                                    <h4><a href="/uploads/thumbnails/@blog.ThumbnailUrl">@blog.Title</a></h4>
+                                    <ul class="post__meta">
+                                        <li>Posts by : <a href="#">@blog.AuthorName</a></li>
+                                        <li class="post_separator">/</li>
+                                        <li>@blog.CreatedDate</li>
+                                    </ul>
+                                    <div>
+                                        @blog.ShortDescription
+                                    </div>
+                                    <div class="blog__btn">
+                                        <a href="/blog/@blog.Slug">read more</a>
+                                    </div>
+                                </div>
+                            </article>
+                            <!-- End Single Post -->
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- End Blog Area -->
+</div>
+<!-- //Main wrapper -->

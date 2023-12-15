@@ -90,6 +90,7 @@ public class BooksController : Controller
                 ShortDescription = vm.ShortDescription,
                 Description = vm.Description,
                 Price = vm.Price,
+                Quantity = vm.Quantity,
                 CategoryIds = vm.CategoryIds
             };
             await _bookService.AddAsync(dto);
@@ -119,6 +120,7 @@ public class BooksController : Controller
                 Name = book.Name,
                 Price = book.Price,
                 ShortDescription = book.ShortDescription,
+                Quantity = book.Quantity,
                 CategoryIds = book.BookCategories?.Select(x => x.CategoryId).ToList(),
                 CategoriesSelectList = categories.Select(x => new SelectListItem()
                 {
