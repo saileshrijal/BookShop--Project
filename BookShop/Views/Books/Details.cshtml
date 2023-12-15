@@ -43,25 +43,6 @@
         <div class="col-lg-6 col-12">
             <div class="product__info__main">
                 <h1>@Model?.Name</h1>
-                <div class="product-reviews-summary d-flex">
-                    <ul class="rating-summary d-flex">
-                        <li>
-                            <i class="zmdi zmdi-star-outline"></i>
-                        </li>
-                        <li>
-                            <i class="zmdi zmdi-star-outline"></i>
-                        </li>
-                        <li>
-                            <i class="zmdi zmdi-star-outline"></i>
-                        </li>
-                        <li class="off">
-                            <i class="zmdi zmdi-star-outline"></i>
-                        </li>
-                        <li class="off">
-                            <i class="zmdi zmdi-star-outline"></i>
-                        </li>
-                    </ul>
-                </div>
                 <div class="price-box">
                     <span>$@Model?.Price</span>
                 </div>
@@ -175,26 +156,3 @@
 <!-- End main Content -->
 </div>
 <!-- //Main wrapper -->
-
-<script>
-var quantityInput = document.getElementById("qty");
-quantityInput.onchange = ()=>{
-    var quantity = parseInt(quantityInput.value);
-    var bookQuantity = parseInt(@Model?.Quantity);
-    if(quantity > bookQuantity){
-        quantityInput.value = bookQuantity;
-        }
-        else{
-            quantityInput.value = quantity;
-        }
-    }
-    $(document).ready(function () {
-        $("#qty").change(function () {
-            var quantity = parseInt($("#qty").val());
-            var bookQuantity = parseInt(@Model?.Quantity);
-            if (quantity > bookQuantity) {
-                $("#qty").val(bookQuantity);
-            }
-        });
-    });
-</script>

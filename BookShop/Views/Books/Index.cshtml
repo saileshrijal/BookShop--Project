@@ -32,7 +32,7 @@
                     <div class="tab__container tab-content">
                         <div class="shop-grid tab-pane fade show active" id="nav-grid" role="tabpanel">
                             <div class="row">
-                                @foreach (var book in Model)
+                                @foreach (var book in Model.Where(x=>x.Status))
                                 {
                                     <!-- Start Single Product -->
                                     <div class="product product__style--3 col-lg-4 col-md-4 col-sm-6 col-12">

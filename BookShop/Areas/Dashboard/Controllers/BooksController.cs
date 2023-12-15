@@ -150,6 +150,7 @@ public class BooksController : Controller
                 ShortDescription = vm.ShortDescription,
                 Description = vm.Description,
                 Price = vm.Price,
+                Quantity = vm.Quantity,
                 CategoryIds = vm.CategoryIds
             };
             await _bookService.EditAsync(dto);

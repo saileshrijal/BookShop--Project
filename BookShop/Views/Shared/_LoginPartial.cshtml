@@ -17,9 +17,6 @@
     @if (SignInManager.IsSignedIn(User))
     {
         <ul class="header__sidebar__right d-flex justify-content-end align-items-center">
-            <li class="shop_search">
-                <a class="search__active" href="#"></a>
-            </li>
             <li class="wishlist">
                 <a asp-controller="Wishlist" asp-action="Index"></a>
             </li>
@@ -42,9 +39,6 @@
                             <div class="switcher-options">
                                 <div class="switcher-currency-trigger">
                                     <div class="setting__menu">
-                                        <span>
-                                            <a href="#">My Account</a>
-                                        </span>
                                         <span>
                                             <a asp-controller="Wishlist" asp-action="Index">My Wishlist</a>
                                         </span>

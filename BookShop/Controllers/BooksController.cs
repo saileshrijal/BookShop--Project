@@ -136,6 +136,11 @@ public class BooksController : Controller
         var book = await _bookRepository.GetWithCategoryAndImagesAsync(id);
         if (book == null) return NotFound();
         var loggedInUser = await _userManager.GetUserAsync(User);
+        if(qty > book.Quantity)
+        {
+            _notyfService.Error("Not enough stock!");
+            return RedirectToAction(nameof(Details), "Books", new {slug = book.Slug});
+        }
         var cart = new AddCartDto()
         {
             BookId = book.Id,

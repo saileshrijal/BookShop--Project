@@ -49,10 +49,8 @@
                                 <table class="table card-table table-vcenter text-nowrap datatable" id="dataTable">
                                     <thead>
                                     <tr>
-                                        <th>Image</th>
                                         <th>ID</th>
                                         <th>Name</th>
-                                        <th>Description</th>
                                         <th>Category</th>
                                         <th>Price</th>
                                         <th>Created</th>
@@ -65,15 +63,9 @@
                                     {
                                         <tr>
                                             <td>
-                                                <img style="width: 30px;height: 30px;" src="/uploads/books/@book.FeaturedImage" alt="">
-                                            </td>
-                                            <td>
                                                 <span class="text-muted">@book.Id</span>
                                             </td>
                                             <td>@book.Name</td>
-                                            <td>
-                                                @book.ShortDescription
-                                            </td>
                                             <td>
                                                 @foreach (var category in book?.CategoryNames)
                                                 {
